@@ -3,953 +3,2335 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evaluasi Bahasa Indonesia Kelas IV — Ide Pokok &amp; Ide Pendukung</title>
+  <title>Petualangan Detektif Paragraf — Gamifikasi Bahasa Indonesia Kelas IV</title>
   <style>
     :root {
-      --bg: #f4f7fb;
+      --bg: #f0f7ff;
+      --bg-pattern: radial-gradient(#dbeafe 1.5px, transparent 1.5px);
       --surface: #ffffff;
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
       --primary-soft: #eff6ff;
+      --secondary: #7c3aed;
+      --secondary-soft: #f5f3ff;
       --accent: #f59e0b;
+      --accent-dark: #d97706;
       --accent-soft: #fef3c7;
       --success: #16a34a;
       --success-soft: #dcfce7;
       --danger: #dc2626;
       --danger-soft: #fee2e2;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 14px;
-      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --teal: #0d9488;
+      --teal-soft: #ccfbf1;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --radius: 18px;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.06);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-      background: var(--bg);
+      font-family: "Nunito", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      background-color: var(--bg);
+      background-image: var(--bg-pattern);
+      background-size: 24px 24px;
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.55;
+      min-height: 100vh;
     }
 
-    .container {
-      max-width: 960px;
+    .app-shell {
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 24px 16px 64px;
+      padding: 16px 16px 72px;
     }
 
-    header.hero {
-      background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #0ea5e9 100%);
+    /* HUD Header */
+    .hud-bar {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #0284c7 100%);
       color: #fff;
-      border-radius: 20px;
-      padding: 28px 24px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      border-radius: 22px;
+      padding: 16px 20px;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    header.hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.5rem, 3vw, 2.1rem);
-      line-height: 1.25;
-    }
-
-    header.hero p {
-      margin: 0;
-      opacity: 0.94;
-      font-size: 0.98rem;
-    }
-
-    .tabs {
+    .hud-top {
       display: flex;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
     }
 
-    .tab-btn {
-      border: 1px solid var(--border);
+    .player-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.22);
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .avatar-badge:hover { transform: scale(1.06); }
+
+    .player-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .player-rank {
+      font-size: 0.85rem;
+      opacity: 0.92;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 3px;
+    }
+
+    .rank-pill {
+      background: rgba(250, 204, 21, 0.25);
+      border: 1px solid rgba(250, 204, 21, 0.6);
+      color: #fef08a;
+      padding: 1px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
+    .hud-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      border-radius: 12px;
+      padding: 7px 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+    .xp-row {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.83rem;
+      font-weight: 700;
+    }
+
+    .xp-track {
+      flex: 1;
+      height: 11px;
+      background: rgba(15, 23, 42, 0.28);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .xp-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #fde047, #f59e0b);
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .nav-tab {
+      border: 2px solid #dbeafe;
       background: var(--surface);
       color: var(--text);
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.93rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
     }
 
-    .tab-btn.active {
+    .nav-tab:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .nav-tab.active {
       background: var(--primary);
       color: #fff;
       border-color: var(--primary);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
     }
 
+    /* Cards & Layout */
     .card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid #e2e8f0;
       border-radius: var(--radius);
       padding: 22px;
       box-shadow: var(--shadow);
       margin-bottom: 18px;
     }
 
-    .card h2 {
-      margin-top: 0;
+    .card-title {
+      margin: 0 0 8px;
       font-size: 1.25rem;
-      color: var(--primary-dark);
+      font-weight: 800;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
+    .muted { color: var(--muted); }
 
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 14px;
     }
 
-    label.field-label {
-      display: block;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 6px;
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
     }
 
-    input[type="text"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.96rem;
-      transition: border-color 0.2s;
-      background: #fff;
+    /* Mission Map */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
     }
 
-    input[type="text"]:focus,
-    textarea:focus,
-    select:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .progress-wrap {
-      position: sticky;
-      top: 10px;
-      z-index: 20;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-    }
-
-    .progress-header {
+    .mission-card {
+      background: var(--surface);
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      align-items: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      background: #e2e8f0;
-      border-radius: 999px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
       overflow: hidden;
     }
 
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #2563eb, #0ea5e9);
-      transition: width 0.25s ease;
+    .mission-card:hover {
+      transform: translateY(-3px);
+      border-color: #60a5fa;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.12);
     }
 
-    .passage-box {
-      background: var(--primary-soft);
-      border-left: 4px solid var(--primary);
-      padding: 14px 16px;
-      border-radius: 0 12px 12px 0;
-      margin: 12px 0 16px;
-      font-size: 1rem;
+    .mission-card.completed {
+      border-color: #86efac;
+      background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
     }
 
-    .passage-label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--primary-dark);
-      margin-bottom: 4px;
+    .mission-card.boss-card {
+      border-color: #fca5a5;
+      background: linear-gradient(135deg, #fff1f2 0%, #fffbeb 100%);
     }
 
-    .question-item {
-      border-top: 1px solid var(--border);
-      padding-top: 16px;
-      margin-top: 16px;
-    }
-
-    .question-item:first-of-type {
-      border-top: none;
-      padding-top: 0;
-      margin-top: 0;
-    }
-
-    .q-title {
-      font-weight: 700;
+    .mission-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
       margin-bottom: 10px;
     }
 
-    .options {
+    .mission-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      background: var(--primary-soft);
+      flex-shrink: 0;
+    }
+
+    .mission-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .boss-card .mission-tag {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .mission-stars {
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+
+    .mission-card h3 {
+      margin: 4px 0 6px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .mission-card p {
+      margin: 0 0 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .mission-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #cbd5e1;
+    }
+
+    .reward-pill {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #92400e;
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* Buttons */
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: transform 0.1s ease, filter 0.15s ease;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:hover { filter: brightness(0.96); }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 0 #1e40af; }
+    .btn-accent { background: var(--accent); color: #fff; box-shadow: 0 4px 0 #b45309; }
+    .btn-success { background: var(--success); color: #fff; box-shadow: 0 4px 0 #15803d; }
+    .btn-danger { background: var(--danger); color: #fff; box-shadow: 0 4px 0 #991b1b; }
+    .btn-purple { background: var(--secondary); color: #fff; box-shadow: 0 4px 0 #5b21b6; }
+    .btn-ghost { background: #e2e8f0; color: var(--text); }
+
+    /* Game Arena */
+    .arena-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .arena-progress {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .arena-progress-track {
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .arena-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .powerup-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .powerup-btn {
+      border: 2px solid #fde68a;
+      background: #fffbeb;
+      color: #92400e;
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+
+    .powerup-btn:hover:not(:disabled) {
+      background: #fef3c7;
+      transform: translateY(-1px);
+    }
+
+    .powerup-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .passage-box {
+      background: #f8fafc;
+      border: 2px solid #bfdbfe;
+      border-left: 6px solid var(--primary);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin: 12px 0 18px;
+      font-size: 1.03rem;
+      line-height: 1.75;
+    }
+
+    .passage-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      background: #dbeafe;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    /* Clickable sentences (Mission 1 & Mini Lab) */
+    .sentence-chip {
+      display: inline;
+      padding: 3px 6px;
+      margin: 0 2px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      border: 2px solid transparent;
+    }
+
+    .sentence-chip:hover {
+      background: #e0f2fe;
+      border-color: #7dd3fc;
+    }
+
+    .sentence-chip.selected-main {
+      background: #fef08a;
+      border-color: #eab308;
+      font-weight: 700;
+    }
+
+    .sentence-chip.selected-support {
+      background: #dbeafe;
+      border-color: #3b82f6;
+    }
+
+    .sentence-chip.wrong-pick {
+      background: #fee2e2;
+      border-color: #ef4444;
+    }
+
+    .sentence-chip.hint-glow {
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.45);
+      background: #fffbeb;
+    }
+
+    /* Options (Mission 2 & 5) */
+    .option-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: #eff6ff;
+      transform: translateX(3px);
+    }
+
+    .option-btn .opt-key {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+    .option-btn.correct .opt-key { background: var(--success); color: #fff; }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+    .option-btn.wrong .opt-key { background: var(--danger); color: #fff; }
+
+    .option-btn.eliminated {
+      opacity: 0.3;
+      text-decoration: line-through;
+      pointer-events: none;
+    }
+
+    /* Mission 3: Sort Cards */
+    .sort-pool {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .sort-card {
+      background: #fff;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      transition: all 0.18s;
+    }
+
+    .sort-card.ok { border-color: var(--success); background: var(--success-soft); }
+    .sort-card.bad { border-color: var(--danger); background: var(--danger-soft); }
+
+    .sort-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .bucket-btn {
+      border: 1.5px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .bucket-btn.active-pokok { background: #fef08a; border-color: #ca8a04; color: #713f12; }
+    .bucket-btn.active-pendukung { background: #dbeafe; border-color: #2563eb; color: #1e3a8a; }
+    .bucket-btn.active-bukan { background: #fee2e2; border-color: #dc2626; color: #7f1d1d; }
+
+    /* Mission 4: Paragraph Builder */
+    .builder-zone {
+      min-height: 92px;
+      border: 2px dashed #60a5fa;
+      background: #eff6ff;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 14px;
       display: grid;
       gap: 8px;
     }
 
-    .option-label {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.15s ease;
+    .builder-chip {
       background: #fff;
-    }
-
-    .option-label:hover {
-      border-color: #93c5fd;
-      background: #f8fafc;
-    }
-
-    .option-label input[type="radio"] {
-      margin-top: 4px;
-      accent-color: var(--primary);
-    }
-
-    .option-label.correct {
-      border-color: var(--success);
-      background: var(--success-soft);
-    }
-
-    .option-label.wrong {
-      border-color: var(--danger);
-      background: var(--danger-soft);
-    }
-
-    .feedback-box {
-      margin-top: 10px;
+      border: 2px solid #93c5fd;
+      border-radius: 12px;
       padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 0.92rem;
-      display: none;
-    }
-
-    .feedback-box.show {
-      display: block;
-    }
-
-    .feedback-box.ok {
-      background: var(--success-soft);
-      border: 1px solid #86efac;
-      color: #14532d;
-    }
-
-    .feedback-box.bad {
-      background: var(--danger-soft);
-      border: 1px solid #fca5a5;
-      color: #7f1d1d;
-    }
-
-    .feedback-box.info {
-      background: var(--accent-soft);
-      border: 1px solid #fcd34d;
-      color: #78350f;
-    }
-
-    .actions {
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
-      font-weight: 700;
-      font-size: 0.96rem;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
-      transition: transform 0.1s ease, background 0.2s ease;
+      font-weight: 600;
+      transition: all 0.15s;
     }
 
-    .btn:active {
-      transform: scale(0.98);
-    }
+    .builder-chip:hover { border-color: var(--primary); background: #f8fafc; }
 
-    .btn-primary {
+    .builder-chip .order-badge {
       background: var(--primary);
       color: #fff;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 800;
+      flex-shrink: 0;
     }
 
-    .btn-primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .btn-secondary {
-      background: #e2e8f0;
-      color: var(--text);
-    }
-
-    .btn-secondary:hover {
-      background: #cbd5e1;
-    }
-
-    .btn-success {
-      background: var(--success);
+    /* Boss Arena */
+    .boss-panel {
+      background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
       color: #fff;
-    }
-
-    .score-banner {
-      display: none;
-      background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);
-      border: 2px solid #93c5fd;
       border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 20px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
 
-    .score-banner.show {
-      display: block;
+    .boss-hp-track {
+      width: 200px;
+      max-width: 100%;
+      height: 14px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
     }
 
-    .score-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
-      margin-top: 14px;
+    .boss-hp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f43f5e, #fb923c);
+      transition: width 0.3s ease;
     }
 
-    .score-stat {
-      background: #fff;
-      border: 1px solid var(--border);
+    .timer-pill {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 12px;
-      padding: 12px 14px;
+      padding: 6px 12px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    /* Feedback & Animations */
+    .feedback-banner {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 0.94rem;
+      display: none;
+      animation: popIn 0.22s ease;
+    }
+
+    .feedback-banner.show { display: block; }
+    .feedback-banner.ok { background: var(--success-soft); border: 2px solid #86efac; color: #14532d; }
+    .feedback-banner.bad { background: var(--danger-soft); border: 2px solid #fca5a5; color: #7f1d1d; }
+    .feedback-banner.hint { background: var(--accent-soft); border: 2px solid #fcd34d; color: #78350f; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(6px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .combo-toast {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 60;
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      display: none;
+      animation: popIn 0.25s ease;
+    }
+
+    /* Badges & Shop */
+    .badge-card {
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      background: #f8fafc;
+      opacity: 0.55;
+      transition: all 0.2s;
+    }
+
+    .badge-card.unlocked {
+      opacity: 1;
+      background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+      border-color: #fbbf24;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-emoji { font-size: 2.2rem; margin-bottom: 6px; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.show { display: flex; }
+
+    .modal-card {
+      background: #fff;
+      border-radius: 22px;
+      max-width: 500px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+      animation: popIn 0.22s ease;
+    }
+
+    .avatar-picker {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 10px 0 16px;
+    }
+
+    .avatar-opt {
+      font-size: 1.7rem;
+      padding: 8px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
       text-align: center;
     }
 
-    .score-stat .num {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--primary-dark);
+    .avatar-opt.selected {
+      border-color: var(--primary);
+      background: #dbeafe;
+      transform: scale(1.06);
     }
 
-    .score-stat .lbl {
-      font-size: 0.84rem;
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.96rem;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Leaderboard table */
+    table.lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+
+    table.lb-table th, table.lb-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    table.lb-table th {
+      background: #f8fafc;
+      font-weight: 800;
       color: var(--muted);
     }
 
-    .highlight-main {
-      background: #fef08a;
-      padding: 2px 4px;
-      border-radius: 4px;
-      font-weight: 600;
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 70;
     }
 
-    .highlight-support {
-      background: #dbeafe;
-      padding: 2px 4px;
-      border-radius: 4px;
-    }
+    .hidden { display: none !important; }
 
-    .hidden {
-      display: none;
-    }
-
-    @media print {
-      .tabs, .progress-wrap, .actions, .no-print {
-        display: none !important;
-      }
-      body {
-        background: #fff;
-      }
-      .card {
-        box-shadow: none;
-        break-inside: avoid;
-      }
-      header.hero {
-        color: #000;
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        box-shadow: none;
-      }
+    @media (max-width: 640px) {
+      .avatar-picker { grid-template-columns: repeat(3, 1fr); }
+      .hud-bar { padding: 14px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero">
-      <div class="badge">Bahasa Indonesia • Kelas IV SD • Kurikulum Merdeka</div>
-      <h1>Evaluasi: Ide Pokok dan Ide Pendukung</h1>
-      <p>Latihan dan evaluasi interaktif untuk melatih kemampuan menemukan kalimat utama, ide pokok, dan ide pendukung dalam paragraf.</p>
+  <canvas id="confettiCanvas"></canvas>
+  <div id="toast" class="combo-toast"></div>
+
+  <div class="app-shell">
+    <!-- HUD BAR -->
+    <header class="hud-bar">
+      <div class="hud-top">
+        <div class="player-info">
+          <div class="avatar-badge" id="hudAvatar" title="Klik untuk ubah profil">🦊</div>
+          <div>
+            <div class="player-name" id="hudName">Detektif Muda</div>
+            <div class="player-rank">
+              <span id="hudClass">Kelas IV</span>
+              <span class="rank-pill" id="hudRank">Lv. 1 • Detektif Pemula</span>
+            </div>
+          </div>
+        </div>
+        <div class="hud-stats">
+          <div class="stat-chip" title="Total Bintang">⭐ <span id="hudStars">0</span>/15</div>
+          <div class="stat-chip" title="Koin Pengetahuan">🪙 <span id="hudCoins">30</span></div>
+          <div class="stat-chip" title="Combo Terbaik">🔥 <span id="hudBestStreak">0</span></div>
+          <button class="icon-btn" id="soundToggleBtn" title="Suara Efek">🔊 Suara</button>
+          <button class="icon-btn" id="editProfileBtn">✏️ Profil</button>
+        </div>
+      </div>
+      <div class="xp-row">
+        <span id="hudLevelText">Level 1</span>
+        <div class="xp-track"><div class="xp-fill" id="hudXpFill"></div></div>
+        <span id="hudXpText">0 / 100 XP</span>
+      </div>
     </header>
 
-    <div class="tabs no-print">
-      <button class="tab-btn active" data-tab="quiz">📝 Kerjakan Evaluasi</button>
-      <button class="tab-btn" data-tab="materi">📖 Ringkasan Materi</button>
-    </div>
+    <!-- NAVIGATION -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-view="map">🗺️ Peta Misi</button>
+      <button class="nav-tab" data-view="materi">📖 Buku Saku Materi</button>
+      <button class="nav-tab" data-view="shop">🛒 Toko &amp; Lencana</button>
+      <button class="nav-tab" data-view="leaderboard">🏆 Papan Skor</button>
+      <a href="evaluasi.html" class="nav-tab">📝 Evaluasi Resmi (20 Soal)</a>
+    </nav>
 
-    <!-- TAB MATERI -->
-    <section id="tab-materi" class="hidden">
-      <div class="card">
-        <h2>Apa itu Ide Pokok dan Ide Pendukung?</h2>
-        <div class="grid-2">
-          <div class="passage-box" style="margin:0;">
-            <div class="passage-label">Ide Pokok (Gagasan Utama)</div>
-            <p style="margin:0;">Inti atau pokok pembahasan dalam sebuah paragraf. Dalam satu paragraf hanya terdapat <strong>satu ide pokok</strong> yang menjadi dasar pengembangan paragraf.</p>
-          </div>
-          <div class="passage-box" style="margin:0; background:#fef3c7; border-left-color:#f59e0b;">
-            <div class="passage-label" style="color:#b45309;">Ide Pendukung (Gagasan Penjelas)</div>
-            <p style="margin:0;">Uraian tambahan yang berfungsi <strong>menjelaskan, memerinci, atau memberi contoh</strong> dari ide pokok agar paragraf menjadi lengkap dan mudah dipahami.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Jenis Paragraf Berdasarkan Letak Kalimat Utama</h2>
-        <ul>
-          <li><strong>Paragraf Deduktif:</strong> Kalimat utama berada di <strong>awal paragraf</strong>, diikuti kalimat-kalimat penjelas.</li>
-          <li><strong>Paragraf Induktif:</strong> Kalimat penjelas disampaikan lebih dahulu, lalu ditutup dengan kalimat utama (sering berupa simpulan) di <strong>akhir paragraf</strong>.</li>
-        </ul>
-        <div class="passage-box">
-          <div class="passage-label">Contoh Analisis Paragraf Deduktif</div>
-          <p style="margin:0;">
-            <span class="highlight-main">Merawat tanaman di halaman rumah memberikan banyak manfaat.</span>
-            <span class="highlight-support">Udara di sekitar rumah menjadi lebih sejuk dan segar.</span>
-            <span class="highlight-support">Selain itu, halaman rumah terlihat lebih indah dan asri.</span>
-          </p>
-          <p style="margin:10px 0 0; font-size:0.9rem;">
-            🟨 <strong>Kuning:</strong> Kalimat Utama (memuat ide pokok: <em>manfaat merawat tanaman di halaman rumah</em>)<br />
-            🟦 <strong>Biru:</strong> Kalimat Penjelas (memuat ide pendukung)
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB KUIS -->
-    <section id="tab-quiz">
-      <div class="card">
-        <h2>Identitas Peserta Didik</h2>
-        <div class="grid-2">
-          <div>
-            <label class="field-label" for="studentName">Nama Lengkap</label>
-            <input type="text" id="studentName" placeholder="Contoh: Alya Ramadhania" />
-          </div>
-          <div>
-            <label class="field-label" for="studentClass">Kelas / No. Absen</label>
-            <input type="text" id="studentClass" placeholder="Contoh: IV-A / 05" />
-          </div>
-        </div>
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-header">
-          <span id="progressText">Terjawab: 0 dari 20 soal</span>
-          <span id="statusBadge" style="color: var(--primary-dark);">Siap mengerjakan</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
-
-      <div id="scoreBanner" class="score-banner">
-        <h2 style="margin-top:0; color:#0f172a;">🎉 Hasil Evaluasi</h2>
-        <p id="studentSummary" style="margin:4px 0 0;"></p>
-        <div class="score-grid">
-          <div class="score-stat">
-            <div class="num" id="pgScore">0 / 20</div>
-            <div class="lbl">Pilihan Ganda (10 soal)</div>
-          </div>
-          <div class="score-stat">
-            <div class="num" id="isianScore">0 / 15</div>
-            <div class="lbl">Isian Singkat (5 soal)</div>
-          </div>
-          <div class="score-stat">
-            <div class="num" id="autoTotal">0 / 35</div>
-            <div class="lbl">Total Nilai Otomatis (A + B)</div>
-          </div>
-          <div class="score-stat">
-            <div class="num" id="autoPercent">0%</div>
-            <div class="lbl">Ketuntasan Bagian A &amp; B</div>
-          </div>
-        </div>
-        <p style="margin:12px 0 0; font-size:0.9rem; color:#334155;">
-          <strong>Catatan:</strong> Bagian C (Uraian, maks. 25 poin) diperiksa oleh guru atau dicocokkan dengan rubrik jawaban yang muncul di bawah setiap soal uraian. Gunakan tombol <em>Cetak / Simpan PDF</em> untuk mengumpulkan hasil kerja.
+    <!-- VIEW: MAP -->
+    <section id="view-map">
+      <div class="card" style="background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%); border-color: #c7d2fe;">
+        <h2 class="card-title">🕵️‍♂️ Misi Detektif Bahasa Indonesia — Kelas IV</h2>
+        <p style="margin:0;">
+          Selamat datang di petualangan menemukan <strong>Ide Pokok</strong> dan <strong>Ide Pendukung</strong>! Selesaikan kelima misi di bawah ini untuk mengumpulkan <strong>15 Bintang</strong>, membuka <strong>Lencana Detektif</strong>, dan mengalahkan <em>Monster Paragraf Kacau</em>!
         </p>
       </div>
 
-      <!-- BAGIAN A -->
-      <div class="card" id="sectionA">
-        <h2>Bagian A. Pilihan Ganda (10 Soal)</h2>
-        <p style="color:var(--muted); margin-top:-6px;">Pilihlah satu jawaban yang paling tepat!</p>
-        <div id="pgContainer"></div>
+      <div class="mission-grid" id="missionGrid"></div>
+    </section>
+
+    <!-- VIEW: ARENA (ACTIVE GAME) -->
+    <section id="view-arena" class="hidden">
+      <div class="card" id="arenaCard">
+        <div class="arena-topbar">
+          <button class="btn btn-ghost" id="exitMissionBtn">⬅️ Peta Misi</button>
+          <div class="arena-progress">
+            <div style="display:flex; justify-content:space-between; font-size:0.86rem; font-weight:800;">
+              <span id="arenaTitle">Misi</span>
+              <span id="arenaStepLabel">1 / 5</span>
+            </div>
+            <div class="arena-progress-track">
+              <div class="arena-progress-fill" id="arenaProgressFill"></div>
+            </div>
+          </div>
+          <div class="stat-chip" style="background:#fef3c7; color:#92400e; border-color:#fcd34d;">
+            🔥 Combo: <span id="arenaCombo">0</span>
+          </div>
+        </div>
+
+        <div class="powerup-bar" id="powerupBar">
+          <button class="powerup-btn" id="useHintBtn">💡 Kaca Pembesar (<span id="countHint">1</span>)</button>
+          <button class="powerup-btn" id="use5050Btn">✂️ Eliminasi 50:50 (<span id="count5050">1</span>)</button>
+          <button class="powerup-btn" id="useShieldBtn">🛡️ Perisai Combo (<span id="countShield">1</span>)</button>
+        </div>
+
+        <div id="arenaBody"></div>
+        <div id="arenaFeedback" class="feedback-banner"></div>
+        <div id="arenaActions" style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+      </div>
+    </section>
+
+    <!-- VIEW: MATERI -->
+    <section id="view-materi" class="hidden">
+      <div class="card">
+        <h2 class="card-title">📖 Buku Saku Detektif Paragraf (Kelas IV)</h2>
+        <div class="grid-2">
+          <div class="passage-box" style="margin:0; border-left-color:#eab308; background:#fefce8; border-color:#fde047;">
+            <div class="passage-badge" style="background:#fef08a; color:#854d0e;">🎯 Ide Pokok (Gagasan Utama)</div>
+            <p style="margin:0;">Inti atau topik utama yang dibahas dalam sebuah paragraf. Dalam satu paragraf hanya ada <strong>1 ide pokok</strong> yang menjadi dasar cerita/penjelasan.</p>
+          </div>
+          <div class="passage-box" style="margin:0; border-left-color:#2563eb; background:#eff6ff; border-color:#bfdbfe;">
+            <div class="passage-badge">📌 Ide Pendukung (Gagasan Penjelas)</div>
+            <p style="margin:0;">Kalimat atau gagasan tambahan yang bertugas <strong>menjelaskan, memerinci, atau memberi contoh</strong> dari ide pokok agar pembaca paham.</p>
+          </div>
+        </div>
       </div>
 
-      <!-- BAGIAN B -->
-      <div class="card" id="sectionB">
-        <h2>Bagian B. Isian Singkat (5 Soal)</h2>
-        <p style="color:var(--muted); margin-top:-6px;">Ketikkan jawaban yang singkat dan tepat pada kolom yang tersedia.</p>
-        <div id="isianContainer"></div>
+      <div class="card">
+        <h2 class="card-title">🧭 Letak Kalimat Utama (Deduktif vs Induktif)</h2>
+        <div class="grid-2">
+          <div style="background:#f8fafc; padding:14px; border-radius:14px; border:1px solid #e2e8f0;">
+            <h3 style="margin:0 0 6px; color:#1d4ed8;">1. Paragraf Deduktif (Di Awal)</h3>
+            <p style="margin:0; font-size:0.93rem;">Kalimat utama muncul di <strong>kalimat pertama</strong>, lalu dijelaskan oleh kalimat-kalimat berikutnya (umum → khusus).</p>
+          </div>
+          <div style="background:#f8fafc; padding:14px; border-radius:14px; border:1px solid #e2e8f0;">
+            <h3 style="margin:0 0 6px; color:#7c3aed;">2. Paragraf Induktif (Di Akhir)</h3>
+            <p style="margin:0; font-size:0.93rem;">Rincian/contoh muncul lebih dulu, lalu ditutup <strong>kalimat utama/simpulan di akhir</strong> (sering diawali kata <em>Jadi, Oleh karena itu, Dengan demikian</em>).</p>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <h3 style="margin:0 0 8px; font-size:1.05rem;">🔬 Lab Mini Interaktif: Coba Klik Kalimatnya!</h3>
+          <p class="muted" style="margin:0 0 8px; font-size:0.9rem;">Klik tiap kalimat di paragraf berikut untuk melihat perannya:</p>
+          <div class="passage-box" id="miniLabBox">
+            <span class="sentence-chip" data-role="main">Merawat tanaman di halaman rumah memberikan banyak manfaat.</span>
+            <span class="sentence-chip" data-role="support">Daun-daun hijau membuat udara di sekitar rumah terasa lebih sejuk.</span>
+            <span class="sentence-chip" data-role="support">Bunga yang mekar juga memperindah pemandangan halaman rumah.</span>
+            <span class="sentence-chip" data-role="support">Selain itu, berkebun bersama keluarga membuat tubuh kita tetap aktif bergerak.</span>
+          </div>
+          <div id="miniLabResult" class="feedback-banner"></div>
+        </div>
       </div>
 
-      <!-- BAGIAN C -->
-      <div class="card" id="sectionC">
-        <h2>Bagian C. Uraian (5 Soal)</h2>
-        <p style="color:var(--muted); margin-top:-6px;">Tuliskan jawabanmu dengan kalimat yang jelas dan lengkap.</p>
-        <div id="uraianContainer"></div>
+      <div class="card">
+        <h2 class="card-title">⚡ 3 Langkah Jitu Menemukan Ide Pokok</h2>
+        <ol style="margin:0; padding-left:20px; display:grid; gap:8px;">
+          <li><strong>Baca seluruh paragraf dengan teliti</strong> dari kalimat pertama sampai terakhir.</li>
+          <li><strong>Tanyakan pada diri sendiri:</strong> <em>"Paragraf ini paling sering membicarakan tentang apa?"</em></li>
+          <li><strong>Temukan kalimat utamanya</strong> (di awal atau di akhir), lalu simpulkan intinya dengan kalimat yang singkat dan jelas!</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- VIEW: SHOP & BADGES -->
+    <section id="view-shop" class="hidden">
+      <div class="card">
+        <h2 class="card-title">🛒 Toko Power-Up Detektif</h2>
+        <p class="muted" style="margin-top:0;">Gunakan Koin Pengetahuan (🪙) hasil misimu untuk membeli alat bantu seru!</p>
+        <div class="grid-3" id="shopGrid"></div>
       </div>
 
-      <div class="actions no-print">
-        <button class="btn btn-primary" id="submitBtn">✅ Selesai &amp; Periksa Jawaban</button>
-        <button class="btn btn-success" id="printBtn">🖨️ Cetak / Simpan PDF</button>
-        <button class="btn btn-secondary" id="resetBtn">🔄 Ulangi Kuis</button>
+      <div class="card">
+        <h2 class="card-title">🏅 Lemari Lencana Prestasi (<span id="badgeCount">0</span>/8)</h2>
+        <div class="grid-3" id="badgeGrid"></div>
+      </div>
+    </section>
+
+    <!-- VIEW: LEADERBOARD -->
+    <section id="view-leaderboard" class="hidden">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <h2 class="card-title" style="margin:0;">🏆 Papan Peringkat Kelas (Perangkat Ini)</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="saveToLbBtn">💾 Simpan Skorku ke Papan</button>
+            <button class="btn btn-success" id="copyReportBtn">📋 Salin Laporan untuk Guru</button>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:0; font-size:0.9rem;">
+          Cocok untuk bermain bergantian di kelas atau mencatat rekor belajarmu sendiri.
+        </p>
+        <div style="overflow-x:auto;">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Petualang</th>
+                <th>Kelas</th>
+                <th>Level &amp; XP</th>
+                <th>Bintang</th>
+                <th>Lencana</th>
+              </tr>
+            </thead>
+            <tbody id="lbBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </div>
 
+  <!-- PROFILE MODAL -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal-card">
+      <h2 style="margin:0 0 6px; color:#1e3a8a;">🕵️ Profil Detektif Bahasa</h2>
+      <p class="muted" style="margin:0 0 14px; font-size:0.92rem;">Tulis namamu dan pilih teman avatar untuk memulai petualangan!</p>
+      <label style="font-weight:800; font-size:0.88rem;">Pilih Avatar:</label>
+      <div class="avatar-picker" id="avatarPicker"></div>
+      <div style="display:grid; gap:10px; margin-bottom:16px;">
+        <div>
+          <label style="font-weight:800; font-size:0.88rem; display:block; margin-bottom:4px;">Nama Siswa</label>
+          <input type="text" id="inputName" placeholder="Contoh: Alya Ramadhania" maxlength="40" />
+        </div>
+        <div>
+          <label style="font-weight:800; font-size:0.88rem; display:block; margin-bottom:4px;">Kelas</label>
+          <input type="text" id="inputClass" placeholder="Contoh: IV-A" maxlength="20" />
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-ghost" id="resetProgressBtn" style="font-size:0.82rem;">🗑️ Reset Progres</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-ghost" id="closeModalBtn">Batal</button>
+          <button class="btn btn-primary" id="saveProfileBtn">Simpan &amp; Main!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const pgGroups = [
-      {
-        passage: "Warga Kampung Melati rutin melaksanakan kerja bakti setiap hari Minggu pagi. Bapak-bapak membersihkan selokan agar aliran air tetap lancar. Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik untuk didaur ulang. Sementara itu, anak-anak ikut membantu menyiram tanaman di taman kampung.",
-        label: "Bacalah paragraf berikut untuk menjawab soal nomor 1 dan 2!",
-        questions: [
-          {
-            no: 1,
-            q: "Ide pokok paragraf di atas adalah ....",
-            options: [
-              "Bapak-bapak membersihkan selokan Kampung Melati",
-              "Ibu-ibu mengumpulkan sampah plastik untuk didaur ulang",
-              "Kegiatan kerja bakti rutin warga Kampung Melati pada Minggu pagi",
-              "Anak-anak menyiram tanaman di taman kampung"
-            ],
-            answer: 2,
-            explain: "Kalimat utama ada di awal paragraf: 'Warga Kampung Melati rutin melaksanakan kerja bakti setiap hari Minggu pagi.' Pilihan lain adalah ide pendukung."
-          },
-          {
-            no: 2,
-            q: "Berikut ini yang merupakan ide pendukung pada paragraf di atas adalah ....",
-            options: [
-              "Kerja bakti dilaksanakan setiap hari Minggu pagi",
-              "Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik",
-              "Warga Kampung Melati sangat rukun dan kompak",
-              "Kerja bakti membuat kampung menjadi ramai"
-            ],
-            answer: 1,
-            explain: "Kalimat 'Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik' menjelaskan kegiatan kerja bakti yang disebutkan pada kalimat utama."
-          }
-        ]
-      },
-      {
-        passage: "Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah. Ibu biasa menyiapkan nasi hangat, telur dadar, dan segelas susu. Dengan sarapan, tubuh Edo terasa lebih bugar dan bersemangat mengikuti pelajaran di kelas. Selain itu, Edo juga lebih mudah berkonsentrasi saat guru menjelaskan materi.",
-        label: "Bacalah paragraf berikut untuk menjawab soal nomor 3 dan 4!",
-        questions: [
-          {
-            no: 3,
-            q: "Kalimat utama pada paragraf tersebut terletak pada ....",
-            options: [
-              "awal paragraf",
-              "tengah paragraf",
-              "akhir paragraf",
-              "awal dan akhir paragraf"
-            ],
-            answer: 0,
-            explain: "Kalimat pertama ('Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah.') adalah kalimat utama karena dijelaskan oleh kalimat-kalimat berikutnya."
-          },
-          {
-            no: 4,
-            q: "Kalimat berikut yang berfungsi sebagai kalimat penjelas adalah ....",
-            options: [
-              "Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah.",
-              "Ibu biasa menyiapkan nasi hangat, telur dadar, dan segelas susu.",
-              "Sarapan merupakan kebiasaan baik bagi semua anak sekolah.",
-              "Edo berangkat ke sekolah pukul setengah tujuh pagi."
-            ],
-            answer: 1,
-            explain: "Kalimat tentang menu sarapan yang disiapkan Ibu merinci kalimat utama mengenai kebiasaan sarapan Edo."
-          }
-        ]
-      },
-      {
-        passage: "Air bersih sangat dibutuhkan untuk minum dan memasak setiap hari. Air juga digunakan untuk mandi, mencuci pakaian, dan membersihkan rumah. Bagi petani, air membantu mengairi sawah agar tanaman padi tumbuh subur. Jadi, air memiliki banyak manfaat bagi kehidupan manusia.",
-        label: "Bacalah paragraf berikut untuk menjawab soal nomor 5 dan 6!",
-        questions: [
-          {
-            no: 5,
-            q: "Ide pokok paragraf di atas adalah ....",
-            options: [
-              "Air digunakan untuk mandi dan mencuci pakaian",
-              "Petani membutuhkan air untuk mengairi sawah",
-              "Air memiliki banyak manfaat bagi kehidupan manusia",
-              "Air bersih harus dimasak sebelum diminum"
-            ],
-            answer: 2,
-            explain: "Paragraf disimpulkan pada kalimat terakhir: 'Jadi, air memiliki banyak manfaat bagi kehidupan manusia.'"
-          },
-          {
-            no: 6,
-            q: "Berdasarkan letak kalimat utamanya, paragraf di atas termasuk jenis paragraf ....",
-            options: [
-              "deduktif",
-              "induktif",
-              "naratif",
-              "deskriptif"
-            ],
-            answer: 1,
-            explain: "Kalimat utama terletak di akhir paragraf (ditandai kata simpulan 'Jadi'), sehingga disebut paragraf induktif."
-          }
-        ]
-      },
-      {
-        passage: "Perpustakaan sekolahku merupakan tempat yang nyaman untuk membaca. Ruangannya bersih, terang, dan dilengkapi pendingin udara. Rak-rak buku tertata rapi sesuai jenisnya, mulai dari buku pelajaran hingga buku cerita bergambar. Tidak heran jika banyak siswa betah berlama-lama di perpustakaan saat jam istirahat.",
-        label: "Bacalah paragraf berikut untuk menjawab soal nomor 7 dan 8!",
-        questions: [
-          {
-            no: 7,
-            q: "Gagasan utama (ide pokok) yang tepat untuk paragraf di atas adalah ....",
-            options: [
-              "Banyak siswa membaca saat jam istirahat",
-              "Rak buku di perpustakaan berisi buku cerita bergambar",
-              "Ruangan perpustakaan dilengkapi pendingin udara",
-              "Perpustakaan sekolah yang nyaman untuk membaca"
-            ],
-            answer: 3,
-            explain: "Kalimat utama berada di awal paragraf tentang kenyamanan perpustakaan sekolah sebagai tempat membaca."
-          },
-          {
-            no: 8,
-            q: "Pernyataan yang bukan termasuk ide pendukung pada paragraf di atas adalah ....",
-            options: [
-              "Ruangan perpustakaan bersih, terang, dan sejuk",
-              "Rak buku tertata rapi sesuai jenis bukunya",
-              "Banyak siswa betah berlama-lama di perpustakaan",
-              "Penjaga perpustakaan meminjamkan buku kepada guru"
-            ],
-            answer: 3,
-            explain: "Informasi mengenai penjaga perpustakaan yang meminjamkan buku kepada guru tidak tercantum dalam paragraf."
-          }
-        ]
-      },
-      {
-        passage: "Memilah sampah di rumah dapat dimulai dengan langkah sederhana. Kita bisa menyediakan dua tempat sampah yang berbeda untuk sampah organik dan anorganik. Sampah organik seperti sisa sayur dan kulit buah dapat diolah menjadi pupuk kompos. Sementara itu, sampah anorganik seperti botol plastik dapat dijual atau dijadikan kerajinan tangan.",
-        label: "Bacalah paragraf berikut untuk menjawab soal nomor 9 dan 10!",
-        questions: [
-          {
-            no: 9,
-            q: "Ide pokok paragraf tersebut adalah ....",
-            options: [
-              "Cara mengolah sisa sayur menjadi pupuk kompos",
-              "Langkah sederhana memilah sampah di rumah",
-              "Manfaat botol plastik untuk kerajinan tangan",
-              "Jenis-jenis tempat sampah di lingkungan rumah"
-            ],
-            answer: 1,
-            explain: "Kalimat pertama menjadi inti paragraf tentang langkah sederhana memilah sampah di rumah, lalu diikuti contoh pelaksanaannya."
-          },
-          {
-            no: 10,
-            q: "Jika dibuat sebuah ide pendukung tambahan yang sesuai dengan paragraf di atas, kalimat yang paling tepat adalah ....",
-            options: [
-              "Membuang sampah ke sungai dapat menyebabkan banjir.",
-              "Harga pupuk kompos di toko pertanian sangat terjangkau.",
-              "Kita juga sebaiknya menempelkan label nama pada masing-masing tempat sampah agar mudah dibedakan.",
-              "Sampah plastik membutuhkan waktu ratusan tahun untuk terurai di tanah."
-            ],
-            answer: 2,
-            explain: "Menempelkan label pada kedua tempat sampah mendukung ide pokok tentang langkah sederhana memilah sampah di rumah."
-          }
-        ]
+    // ============== AUDIO SYNTH (WEB AUDIO API) ==============
+    const AudioFX = (() => {
+      let ctx = null;
+      function getCtx() {
+        if (!state.sound) return null;
+        if (!ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) ctx = new AC();
+        }
+        if (ctx && ctx.state === "suspended") ctx.resume();
+        return ctx;
       }
-    ];
-
-    const isianQuestions = [
-      {
-        no: 11,
-        q: "Gagasan atau inti permasalahan yang menjadi dasar pengembangan sebuah paragraf disebut ....",
-        accepted: ["ide pokok", "gagasan pokok", "gagasan utama"],
-        displayAnswer: "Ide pokok (atau gagasan pokok / gagasan utama)"
-      },
-      {
-        no: 12,
-        q: "Kalimat yang berisi ide pokok dalam suatu paragraf disebut kalimat ....",
-        accepted: ["kalimat utama", "utama"],
-        displayAnswer: "Kalimat utama"
-      },
-      {
-        no: 13,
-        q: "Paragraf yang kalimat utamanya terletak di awal paragraf disebut paragraf ....",
-        accepted: ["deduktif", "paragraf deduktif"],
-        displayAnswer: "Deduktif (paragraf deduktif)"
-      },
-      {
-        no: 14,
-        q: "Kalimat-kalimat yang menjelaskan atau merinci kalimat utama disebut kalimat ....",
-        accepted: ["penjelas", "kalimat penjelas", "pendukung", "kalimat pendukung"],
-        displayAnswer: "Kalimat penjelas (atau kalimat pendukung)"
-      },
-      {
-        no: 15,
-        passage: "Batik merupakan warisan budaya Indonesia yang sangat membanggakan. Motif batik di setiap daerah memiliki ciri khas dan makna tersendiri. Hingga kini, kain batik sering dipakai dalam acara resmi maupun kegiatan sehari-hari.",
-        q: "Ide pokok pada paragraf di atas adalah ....",
-        accepted: ["batik merupakan warisan budaya indonesia", "warisan budaya indonesia", "batik warisan budaya"],
-        displayAnswer: "Batik merupakan warisan budaya Indonesia yang sangat membanggakan"
+      function tone(freq, dur, type = "sine", vol = 0.14, delay = 0) {
+        const c = getCtx();
+        if (!c) return;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        const t = c.currentTime + delay;
+        gain.gain.setValueAtTime(0.001, t);
+        gain.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+        osc.connect(gain);
+        gain.connect(c.destination);
+        osc.start(t);
+        osc.stop(t + dur + 0.02);
       }
-    ];
+      return {
+        click() { tone(520, 0.06, "triangle", 0.08); },
+        ok() { tone(587, 0.12, "sine", 0.15, 0); tone(880, 0.18, "sine", 0.15, 0.09); },
+        bad() { tone(240, 0.14, "sawtooth", 0.08, 0); tone(185, 0.2, "sawtooth", 0.07, 0.11); },
+        win() {
+          [523, 659, 784, 1046].forEach((f, i) => tone(f, 0.22, "triangle", 0.16, i * 0.1));
+        }
+      };
+    })();
 
-    const uraianQuestions = [
-      {
-        no: 16,
-        q: "Jelaskan perbedaan antara ide pokok dan ide pendukung dalam sebuah paragraf!",
-        rubric: "Ide pokok adalah gagasan utama/inti pembahasan dalam paragraf (satu per paragraf), sedangkan ide pendukung adalah gagasan tambahan yang menjelaskan, memerinci, atau memberi contoh ide pokok."
-      },
-      {
-        no: 17,
-        passage: "Permainan tradisional gobak sodor memiliki banyak manfaat bagi anak-anak. Permainan ini melatih ketangkasan dan kecepatan berlari saat menghindari penjaga garis. Selain itu, gobak sodor mengajarkan kerja sama tim dan sikap sportif antaranggota kelompok. Anak-anak juga dapat berolahraga sambil bergembira bersama teman-temannya.",
-        q: "Tuliskan kalimat utama pada paragraf di atas!",
-        rubric: "Permainan tradisional gobak sodor memiliki banyak manfaat bagi anak-anak."
-      },
-      {
-        no: 18,
-        q: "Tuliskan ide pokok dari paragraf pada soal nomor 17 dengan bahasamu sendiri!",
-        rubric: "Manfaat permainan tradisional gobak sodor bagi anak-anak."
-      },
-      {
-        no: 19,
-        q: "Tuliskan dua ide pendukung yang terdapat pada paragraf pada soal nomor 17!",
-        rubric: "Contoh dua ide pendukung: (1) Melatih ketangkasan dan kecepatan berlari saat menghindari penjaga garis; (2) Mengajarkan kerja sama tim dan sikap sportif; (3) Anak-anak dapat berolahraga sambil bergembira."
-      },
-      {
-        no: 20,
-        q: 'Buatlah satu paragraf singkat (minimal 3 kalimat) dengan ide pokok "Manfaat menabung sejak dini"!',
-        rubric: "Contoh: Menabung sejak dini memberikan banyak manfaat bagi masa depan kita. Dengan menyisihkan sebagian uang jajan setiap hari, kita belajar hidup hemat. Uang tabungan dapat digunakan untuk membeli perlengkapan sekolah atau keperluan mendadak."
-      }
-    ];
-
-    const letters = ["A", "B", "C", "D"];
-
-    function renderPG() {
-      const container = document.getElementById("pgContainer");
-      container.innerHTML = "";
-      pgGroups.forEach(group => {
-        const pBox = document.createElement("div");
-        pBox.className = "passage-box";
-        pBox.innerHTML = `<div class="passage-label">${group.label}</div><div>${group.passage}</div>`;
-        container.appendChild(pBox);
-
-        group.questions.forEach(item => {
-          const qDiv = document.createElement("div");
-          qDiv.className = "question-item";
-          qDiv.innerHTML = `
-            <div class="q-title">${item.no}. ${item.q}</div>
-            <div class="options" id="pg-opts-${item.no}">
-              ${item.options.map((opt, idx) => `
-                <label class="option-label" data-q="${item.no}" data-idx="${idx}">
-                  <input type="radio" name="pg_${item.no}" value="${idx}" />
-                  <span><strong>${letters[idx]}.</strong> ${opt}</span>
-                </label>
-              `).join("")}
-            </div>
-            <div class="feedback-box" id="pg-fb-${item.no}"></div>
-          `;
-          container.appendChild(qDiv);
+    // ============== CONFETTI ==============
+    function launchConfetti() {
+      const canvas = document.getElementById("confettiCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ["#2563eb", "#f59e0b", "#16a34a", "#ec4899", "#8b5cf6", "#06b6d4"];
+      const pieces = Array.from({ length: 90 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * 140,
+        r: 4 + Math.random() * 6,
+        vy: 3 + Math.random() * 4,
+        vx: -2 + Math.random() * 4,
+        rot: Math.random() * Math.PI * 2,
+        vrot: -0.15 + Math.random() * 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      }));
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.rot += p.vrot;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+          ctx.restore();
         });
-      });
+        frame++;
+        if (frame < 130) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      draw();
     }
 
-    function renderIsian() {
-      const container = document.getElementById("isianContainer");
-      container.innerHTML = "";
-      isianQuestions.forEach(item => {
-        if (item.passage) {
-          const pBox = document.createElement("div");
-          pBox.className = "passage-box";
-          pBox.innerHTML = `<div class="passage-label">Bacalah paragraf berikut untuk soal nomor ${item.no}!</div><div>${item.passage}</div>`;
-          container.appendChild(pBox);
+    // ============== GAME DATA ==============
+    const AVATARS = ["🦊", "🦉", "🐼", "🦁", "🐱", "🐰"];
+
+    const RANKS = [
+      { level: 1, minXp: 0, title: "Detektif Pemula" },
+      { level: 2, minXp: 100, title: "Pemburu Kalimat" },
+      { level: 3, minXp: 240, title: "Penjelajah Paragraf" },
+      { level: 4, minXp: 420, title: "Kapten Ide Pokok" },
+      { level: 5, minXp: 650, title: "Maestro Bahasa" },
+      { level: 6, minXp: 950, title: "Legenda Literasi" }
+    ];
+
+    const BADGES = [
+      { id: "first_step", emoji: "🥾", name: "Langkah Pertama", desc: "Menyelesaikan misi pertamamu." },
+      { id: "eagle_eye", emoji: "🔍", name: "Mata Elang", desc: "Meraih 3 bintang di Misi 1 (Sorot Kalimat)." },
+      { id: "hunter", emoji: "🎯", name: "Pemburu Ide Pokok", desc: "Meraih 3 bintang di Misi 2 (Berburu Ide Pokok)." },
+      { id: "sorter", emoji: "🧩", name: "Penyortir Andal", desc: "Menuntaskan Misi 3 (Sortir Kartu Ide)." },
+      { id: "architect", emoji: "🏗️", name: "Arsitek Paragraf", desc: "Menuntaskan Misi 4 (Rakit Paragraf Padu)." },
+      { id: "boss_slayer", emoji: "⚔️", name: "Penakluk Bos", desc: "Mengalahkan Monster Paragraf Kacau di Misi 5." },
+      { id: "combo_5", emoji: "🔥", name: "Raja Kombo", desc: "Mencapai 5 jawaban benar berturut-turut." },
+      { id: "all_stars", emoji: "👑", name: "Kolektor Bintang", desc: "Mengumpulkan minimal 12 bintang total." }
+    ];
+
+    const SHOP_ITEMS = [
+      { id: "hint", emoji: "💡", name: "Kaca Pembesar", desc: "Memberi petunjuk kata kunci atau posisi kalimat utama.", price: 15 },
+      { id: "f5050", emoji: "✂️", name: "Eliminasi 50:50", desc: "Menghilangkan 2 pilihan salah pada soal Pilihan Ganda.", price: 20 },
+      { id: "shield", emoji: "🛡️", name: "Perisai Combo", desc: "Melindungi combo dan nyawa dari 1 kesalahan.", price: 25 }
+    ];
+
+    const MISSIONS = [
+      {
+        id: "m1",
+        tag: "Misi 1 • Klik Kalimat",
+        icon: "🔦",
+        title: "Sorot Kalimat Utama!",
+        desc: "Klik langsung kalimat yang menjadi kalimat utama atau kalimat penjelas di dalam paragraf.",
+        reward: "+75 XP • 20 🪙",
+        type: "click_sentence"
+      },
+      {
+        id: "m2",
+        tag: "Misi 2 • Pilihan Ganda",
+        icon: "🎯",
+        title: "Berburu Ide Pokok",
+        desc: "Temukan ide pokok, ide pendukung, dan jenis paragraf deduktif maupun induktif.",
+        reward: "+90 XP • 25 🪙",
+        type: "mcq"
+      },
+      {
+        id: "m3",
+        tag: "Misi 3 • Klasifikasi",
+        icon: "🧩",
+        title: "Sortir Kartu Ide",
+        desc: "Pilah mana pernyataan yang termasuk Ide Pokok, Ide Pendukung, atau Pengecoh!",
+        reward: "+90 XP • 25 🪙",
+        type: "sort"
+      },
+      {
+        id: "m4",
+        tag: "Misi 4 • Merakit Teks",
+        icon: "🔗",
+        title: "Arsitek Paragraf Padu",
+        desc: "Susun 1 kalimat utama dan 2 kalimat pendukung menjadi paragraf yang runtut, buang penyusupnya!",
+        reward: "+100 XP • 30 🪙",
+        type: "builder"
+      },
+      {
+        id: "m5",
+        tag: "Misi 5 • Boss Battle ⚡",
+        icon: "👾",
+        title: "Duel Bos Paragraf Kacau",
+        desc: "Jawab 8 tantangan cepat dalam 90 detik dengan 3 nyawa untuk mengalahkan Bos!",
+        reward: "+140 XP • 45 🪙",
+        type: "boss",
+        isBoss: true
+      }
+    ];
+
+    // Misi 1 Data: Clickable sentences
+    const M1_QUESTIONS = [
+      {
+        task: "Klik KALIMAT UTAMA pada paragraf berikut!",
+        sentences: [
+          "Warga Desa Sukamaju rutin bergotong royong membersihkan lingkungan setiap hari Minggu.",
+          "Para pemuda membersihkan selokan agar tidak tersumbat sampah.",
+          "Ibu-ibu menyapu jalan dan menyiapkan minuman hangat bagi warga.",
+          "Sementara itu, anak-anak ikut mengumpulkan daun kering di taman."
+        ],
+        targetIdx: 0,
+        hint: "Perhatikan kalimat pertama! Kalimat lainnya menjelaskan kegiatan tiap warga saat gotong royong.",
+        explain: "Kalimat pertama adalah kalimat utama (paragraf deduktif). Kalimat ke-2 hingga ke-4 memerinci kegiatan gotong royong tersebut."
+      },
+      {
+        task: "Hati-hati! Klik KALIMAT UTAMA pada paragraf induktif berikut!",
+        sentences: [
+          "Tumbuhan membutuhkan air untuk proses fotosintesis.",
+          "Hewan memerlukan air untuk minum dan menjaga suhu tubuhnya.",
+          "Manusia juga memakai air setiap hari untuk minum, memasak, dan mandi.",
+          "Oleh karena itu, air merupakan sumber kehidupan yang sangat penting bagi semua makhluk hidup."
+        ],
+        targetIdx: 3,
+        hint: "Cari kata simpulan seperti 'Oleh karena itu' di bagian akhir paragraf!",
+        explain: "Paragraf ini bersifat induktif: tiga kalimat awal memberi contoh kebutuhan air, lalu disimpulkan di kalimat terakhir."
+      },
+      {
+        task: "Klik KALIMAT UTAMA pada paragraf berikut!",
+        sentences: [
+          "Olahraga pagi memiliki banyak manfaat bagi kesehatan anak.",
+          "Tubuh menjadi lebih bugar karena peredaran darah lancar.",
+          "Selain itu, sinar matahari pagi membantu pembentukan vitamin D untuk tulang.",
+          "Anak yang rajin berolahraga juga lebih bersemangat saat belajar di kelas."
+        ],
+        targetIdx: 0,
+        hint: "Kalimat mana yang paling umum dan dijelaskan oleh tiga kalimat lainnya?",
+        explain: "Kalimat pertama memuat gagasan umum tentang manfaat olahraga pagi, sedangkan kalimat berikutnya merinci manfaatnya."
+      },
+      {
+        task: "Klik KALIMAT PENJELAS yang menyebutkan contoh buku di perpustakaan!",
+        sentences: [
+          "Perpustakaan sekolahku selalu ramai dikunjungi siswa saat jam istirahat.",
+          "Di sana tersedia beragam buku, mulai dari ensiklopedia bergambar hingga cerita rakyat Nusantara.",
+          "Suasana ruangannya sangat tenang sehingga siswa nyaman membaca."
+        ],
+        targetIdx: 1,
+        hint: "Cari kalimat yang menyebut jenis-jenis buku seperti ensiklopedia atau cerita rakyat.",
+        explain: "Kalimat kedua berfungsi sebagai kalimat penjelas yang memerinci koleksi buku di perpustakaan."
+      },
+      {
+        task: "Klik KALIMAT UTAMA pada paragraf berikut!",
+        sentences: [
+          "Membaca buku cerita dapat menambah kosakata baru.",
+          "Membaca buku pengetahuan membuat kita memahami banyak peristiwa alam.",
+          "Kebiasaan membaca juga melatih daya imajinasi dan konsentrasi.",
+          "Jadi, gemar membaca memberikan banyak manfaat bagi pelajar."
+        ],
+        targetIdx: 3,
+        hint: "Lihat kata 'Jadi' sebagai penanda simpulan utama paragraf!",
+        explain: "Kalimat keempat ('Jadi, gemar membaca memberikan banyak manfaat bagi pelajar.') adalah kalimat utama di akhir paragraf (induktif)."
+      }
+    ];
+
+    // Misi 2 Data: MCQ
+    const M2_QUESTIONS = [
+      {
+        passage: "Sarapan bergizi sebelum berangkat sekolah sangat penting bagi anak-anak. Makanan bergizi memberi energi agar tubuh tidak mudah lemas. Selain itu, sarapan membantu otak berkonsentrasi saat menerima pelajaran dari guru.",
+        q: "Ide pokok paragraf di atas adalah ....",
+        options: [
+          "Sarapan membuat tubuh tidak mudah lemas",
+          "Pentingnya sarapan bergizi sebelum sekolah bagi anak-anak",
+          "Guru menjelaskan pelajaran di kelas setiap pagi",
+          "Anak-anak harus minum susu setiap malam"
+        ],
+        answer: 1,
+        hint: "Ide pokok merupakan inti dari kalimat pertama paragraf ini.",
+        explain: "Kalimat utama ada di awal paragraf tentang pentingnya sarapan bergizi sebelum berangkat sekolah."
+      },
+      {
+        passage: "Lampu kamar sebaiknya dimatikan jika tidak digunakan pada siang hari. Keran air juga harus ditutup rapat setelah selesai dipakai. Selain itu, cabut kabel pengisi daya apabila baterai sudah penuh. Dengan demikian, kita dapat menghemat energi di rumah dengan cara sederhana.",
+        q: "Ide pokok paragraf tersebut adalah ....",
+        options: [
+          "Cara menghemat energi di rumah secara sederhana",
+          "Keran air harus selalu ditutup rapat",
+          "Lampu kamar hanya dinyalakan pada malam hari",
+          "Bahaya membiarkan pengisi daya tetap terpasang"
+        ],
+        answer: 0,
+        hint: "Perhatikan kalimat terakhir yang diawali 'Dengan demikian'!",
+        explain: "Paragraf ini adalah paragraf induktif. Kalimat terakhir merangkum seluruh contoh menjadi ide pokok cara menghemat energi di rumah."
+      },
+      {
+        passage: "Kegiatan Pramuka di sekolah melatih banyak karakter baik bagi siswa. Melalui kegiatan berkemah, siswa belajar hidup mandiri dan disiplin. Saat mengikuti lomba baris-berbaris, mereka berlatih kerja sama dan tanggung jawab dalam kelompok.",
+        q: "Berikut ini yang merupakan ide pendukung pada paragraf di atas adalah ....",
+        options: [
+          "Pramuka melatih karakter baik siswa",
+          "Kegiatan berkemah melatih kemandirian dan kedisiplinan siswa",
+          "Semua siswa wajib memakai seragam cokelat",
+          "Sekolah mengadakan Pramuka setiap hari Sabtu"
+        ],
+        answer: 1,
+        hint: "Cari pernyataan yang benar-benar ada di teks dan menjelaskan kalimat utama!",
+        explain: "Kemampuan mandiri dan disiplin melalui kegiatan berkemah menjelaskan ide pokok tentang latihan karakter baik di Pramuka."
+      },
+      {
+        passage: "Hutan membantu menyerap air hujan sehingga mencegah terjadinya banjir. Akar pepohonan menahan tanah agar tidak mudah longsor. Hutan juga menjadi tempat tinggal berbagai satwa langka serta penghasil oksigen. Oleh sebab itu, kelestarian hutan wajib kita jaga bersama.",
+        q: "Berdasarkan letak kalimat utamanya, paragraf di atas termasuk paragraf ....",
+        options: [
+          "deduktif (kalimat utama di awal)",
+          "induktif (kalimat utama di akhir)",
+          "campuran (di awal dan di akhir)",
+          "naratif tanpa kalimat utama"
+        ],
+        answer: 1,
+        hint: "Cek posisi kata simpulan 'Oleh sebab itu'!",
+        explain: "Kalimat utama berada di akhir paragraf berupa ajakan simpulan, sehingga disebut paragraf induktif."
+      },
+      {
+        passage: "Pasar tradisional tetap ramai dikunjungi masyarakat meskipun banyak toko modern bermunculan. Harga barang kebutuhan sehari-hari di pasar tradisional relatif terjangkau. Selain itu, pembeli dan penjual dapat tawar-menawar secara langsung dengan akrab.",
+        q: "Ide pendukung tambahan yang paling sesuai untuk melengkapi paragraf di atas adalah ....",
+        options: [
+          "Pusat perbelanjaan modern memiliki eskalator dan bioskop.",
+          "Bahan makanan seperti sayur dan buah di pasar tradisional juga masih segar.",
+          "Jalan menuju pasar sering macet saat musim hujan tiba.",
+          "Petani memanen padi dua kali dalam satu tahun."
+        ],
+        answer: 1,
+        hint: "Pilih kalimat yang masih mendukung alasan mengapa pasar tradisional tetap ramai dikunjungi!",
+        explain: "Sayur dan buah yang masih segar memperkuat alasan keunggulan pasar tradisional sehingga tetap ramai dikunjungi."
+      }
+    ];
+
+    // Misi 3 Data: Sort Cards (1 Pokok, 2 Pendukung, 1 Bukan)
+    const M3_ROUNDS = [
+      {
+        title: "Ronde 1: Permainan Congklak",
+        passage: "Permainan tradisional congklak masih digemari anak-anak hingga sekarang. Permainan ini melatih ketelitian dalam berhitung saat memindahkan biji congklak. Selain itu, congklak mengajarkan sikap sabar menunggu giliran bermain bersama teman.",
+        cards: [
+          { text: "Permainan tradisional congklak masih digemari anak-anak.", role: "pokok" },
+          { text: "Congklak melatih ketelitian dalam berhitung.", role: "pendukung" },
+          { text: "Congklak mengajarkan sikap sabar menunggu giliran.", role: "pendukung" },
+          { text: "Biji congklak biasanya terbuat dari plastik atau kerang laut yang mahal.", role: "bukan" }
+        ],
+        hint: "Ide pokok ada di kalimat pertama. Yang menyebut harga kerang laut tidak ada di bacaan!"
+      },
+      {
+        title: "Ronde 2: Gerakan Menanam Pohon",
+        passage: "Penghijauan di lingkungan sekolah membawa banyak kebaikan. Pohon-pohon rindang membuat halaman sekolah terasa sejuk saat siang hari. Daun yang rimbun juga membantu mengurangi debu dan polusi udara di sekitar kelas.",
+        cards: [
+          { text: "Daun yang rimbun membantu mengurangi debu dan polusi udara.", role: "pendukung" },
+          { text: "Banyaknya kebaikan dari penghijauan di lingkungan sekolah.", role: "pokok" },
+          { text: "Pohon rindang membuat halaman sekolah terasa sejuk.", role: "pendukung" },
+          { text: "Siswa kelas IV membawa pot bunga dari rumah masing-masing.", role: "bukan" }
+        ],
+        hint: "Cari gagasan paling umum sebagai Ide Pokok, lalu dua manfaat pohon sebagai Ide Pendukung."
+      },
+      {
+        title: "Ronde 3: Kebersihan Gigi",
+        passage: "Menggosok gigi dua kali sehari mencegah munculnya plak. Mengurangi makanan terlalu manis juga melindungi lapisan email gigi. Memeriksakan gigi ke dokter setiap enam bulan sekali membantu mendeteksi lubang sejak dini. Jadi, ada berbagai cara mudah untuk menjaga kesehatan gigi.",
+        cards: [
+          { text: "Berbagai cara mudah untuk menjaga kesehatan gigi.", role: "pokok" },
+          { text: "Menggosok gigi dua kali sehari mencegah plak.", role: "pendukung" },
+          { text: "Memeriksakan gigi ke dokter setiap enam bulan sekali.", role: "pendukung" },
+          { text: "Sikat gigi harus diganti jika warnanya sudah pudar.", role: "bukan" }
+        ],
+        hint: "Paragraf ini induktif! Kalimat terakhir adalah ide pokoknya."
+      }
+    ];
+
+    // Misi 4 Data: Paragraph Builder (choose 1 main + 2 support in order, leave out 1 intruder)
+    const M4_ROUNDS = [
+      {
+        title: "Ronde 1: Tema Bersepeda ke Sekolah",
+        targetTopic: "Manfaat bersepeda ke sekolah",
+        pieces: [
+          { id: "p1", text: "Bersepeda ke sekolah memberikan banyak manfaat bagi siswa.", type: "main" },
+          { id: "p2", text: "Mengayuh sepeda setiap pagi membuat otot kaki menjadi lebih kuat dan sehat.", type: "support" },
+          { id: "p3", text: "Selain itu, bersepeda membantu mengurangi polusi udara karena tidak mengeluarkan asap.", type: "support" },
+          { id: "p4", text: "Sepeda balap berwarna merah itu dibeli ayah di toko dekat stasiun.", type: "intruder" }
+        ],
+        hint: "Mulai dengan kalimat utama yang paling umum, lalu ikuti 2 kalimat manfaat bersepeda. Buang kalimat tentang membeli sepeda merah!"
+      },
+      {
+        title: "Ronde 2: Tema Mengelola Sampah Plastik",
+        targetTopic: "Cara kreatif mengurangi sampah plastik",
+        pieces: [
+          { id: "q1", text: "Ada berbagai cara kreatif untuk mengurangi sampah plastik di sekitar kita.", type: "main" },
+          { id: "q2", text: "Kita dapat membawa tas belanja kain sendiri saat pergi ke pasar.", type: "support" },
+          { id: "q3", text: "Botol plastik bekas minuman juga bisa didaur ulang menjadi pot tanaman hias.", type: "support" },
+          { id: "q4", text: "Hari Minggu lalu, warga menonton pertunjukan wayang kulit di balai desa.", type: "intruder" }
+        ],
+        hint: "Pilih kalimat umum tentang mengurangi sampah plastik di urutan ke-1, lalu dua contohnya."
+      },
+      {
+        title: "Ronde 3: Tema Merawat Kucing Peliharaan",
+        targetTopic: "Cara merawat kucing peliharaan dengan baik",
+        pieces: [
+          { id: "r1", text: "Merawat kucing peliharaan memerlukan perhatian dan kasih sayang.", type: "main" },
+          { id: "r2", text: "Kucing harus diberi makanan bergizi dan air minum bersih secara teratur.", type: "support" },
+          { id: "r3", text: "Kandang serta tempat tidurnya juga perlu dibersihkan agar kucing terhindar dari penyakit.", type: "support" },
+          { id: "r4", text: "Ikan paus adalah mamalia laut terbesar di dunia.", type: "intruder" }
+        ],
+        hint: "Letakkan kalimat tentang merawat kucing memerlukan perhatian di paling atas, dan singkirkan kalimat tentang ikan paus!"
+      }
+    ];
+
+    // Misi 5 Data: Boss Battle (8 quick questions)
+    const M5_QUESTIONS = [
+      {
+        q: "Dalam satu paragraf, berapakah jumlah ide pokok yang seharusnya ada?",
+        options: ["Satu ide pokok", "Dua ide pokok", "Tiga ide pokok", "Sebanyak jumlah kalimat"],
+        answer: 0,
+        hint: "Setiap paragraf hanya membahas satu inti utama.",
+        explain: "Satu paragraf hanya memiliki satu ide pokok."
+      },
+      {
+        q: "Paragraf yang kalimat utamanya terletak di AWAL paragraf disebut paragraf ....",
+        options: ["induktif", "deduktif", "deskriptif", "persuasif"],
+        answer: 1,
+        hint: "Ingat: DE-duktif = DE-pan (awal)!",
+        explain: "Deduktif memiliki kalimat utama di awal (depan) paragraf."
+      },
+      {
+        q: "Kata penghubung 'Jadi', 'Oleh karena itu', dan 'Dengan demikian' sering menandai kalimat utama pada paragraf ....",
+        options: ["deduktif", "induktif", "imperatif", "eksploratif"],
+        answer: 1,
+        hint: "Kata simpulan biasanya muncul di akhir paragraf.",
+        explain: "Paragraf induktif menaruh simpulan/kalimat utama di akhir."
+      },
+      {
+        q: "Kalimat yang bertugas menjelaskan, memerinci, atau memberi contoh bagi kalimat utama disebut ....",
+        options: ["kalimat utama", "kalimat penjelas", "kalimat tanya", "judul bacaan"],
+        answer: 1,
+        hint: "Namanya sesuai tugasnya: menjelaskan!",
+        explain: "Kalimat penjelas (berisi ide pendukung) memerinci kalimat utama."
+      },
+      {
+        q: "Bacalah: 'Siti rajin menabung di celengan. Setiap hari ia menyisihkan uang jajan. Setelah enam bulan, uangnya cukup untuk membeli tas baru.' Ide pokoknya adalah ....",
+        options: ["Tas baru Siti berwarna biru", "Siti rajin menabung di celengan", "Harga tas baru sangat mahal", "Siti tidak pernah jajan"],
+        answer: 1,
+        hint: "Lihat kalimat pertama paragraf tersebut.",
+        explain: "Kalimat utamanya adalah 'Siti rajin menabung di celengan.'"
+      },
+      {
+        q: "Bacalah: 'Daun sirih dapat menghentikan mimisan. Kunyit baik untuk meredakan sakit perut. Jahe bermanfaat menghangatkan badan. Jadi, banyak tanaman di sekitar kita berkhasiat sebagai obat.' Paragraf ini berjenis ....",
+        options: ["deduktif", "induktif", "naratif", "dialog"],
+        answer: 1,
+        hint: "Lihat posisi kalimat simpulan yang diawali kata 'Jadi'.",
+        explain: "Kalimat utama ada di akhir paragraf, sehingga termasuk paragraf induktif."
+      },
+      {
+        q: "Manakah yang BUKAN fungsi dari ide pendukung?",
+        options: [
+          "Memberikan contoh nyata",
+          "Memerinci informasi kalimat utama",
+          "Mengganti topik menjadi cerita baru yang tidak berhubungan",
+          "Membuat paragraf lebih jelas dan lengkap"
+        ],
+        answer: 2,
+        hint: "Ide pendukung harus tetap setia pada topik utama!",
+        explain: "Ide pendukung tidak boleh keluar dari topik ide pokok."
+      },
+      {
+        q: "Langkah pertama yang paling tepat untuk menemukan ide pokok adalah ....",
+        options: [
+          "Menghitung jumlah huruf pada judul",
+          "Membaca seluruh paragraf dengan cermat",
+          "Langsung menebak dari kata terakhir",
+          "Menghapus kalimat kedua dan ketiga"
+        ],
+        answer: 1,
+        hint: "Kita harus memahami isi seluruh paragraf terlebih dahulu.",
+        explain: "Membaca seluruh paragraf dengan cermat membantu kita menemukan kalimat utama dan ide pokok."
+      }
+    ];
+
+    // ============== STATE & STORAGE ==============
+    const STORAGE_KEY = "detektif_paragraf_v1";
+    const LB_KEY = "detektif_paragraf_lb_v1";
+
+    const defaultState = {
+      name: "Detektif Muda",
+      cls: "IV-A",
+      avatar: "🦊",
+      xp: 0,
+      coins: 30,
+      bestStreak: 0,
+      sound: true,
+      inventory: { hint: 2, f5050: 1, shield: 1 },
+      missionStars: { m1: 0, m2: 0, m3: 0, m4: 0, m5: 0 },
+      badges: []
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(defaultState),
+          ...parsed,
+          inventory: { ...defaultState.inventory, ...(parsed.inventory || {}) },
+          missionStars: { ...defaultState.missionStars, ...(parsed.missionStars || {}) },
+          badges: Array.isArray(parsed.badges) ? parsed.badges : []
+        };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderHUD();
+    }
+
+    function getLevelInfo(xp) {
+      let current = RANKS[0];
+      let next = RANKS[1];
+      for (let i = 0; i < RANKS.length; i++) {
+        if (xp >= RANKS[i].minXp) {
+          current = RANKS[i];
+          next = RANKS[i + 1] || null;
         }
-        const qDiv = document.createElement("div");
-        qDiv.className = "question-item";
-        qDiv.innerHTML = `
-          <div class="q-title">${item.no}. ${item.q}</div>
-          <input type="text" id="isian_${item.no}" class="track-input" placeholder="Ketik jawabanmu di sini..." />
-          <div class="feedback-box" id="isian-fb-${item.no}"></div>
+      }
+      const prevMin = current.minXp;
+      const nextMin = next ? next.minXp : current.minXp + 300;
+      const pct = next ? Math.min(100, Math.round(((xp - prevMin) / (nextMin - prevMin)) * 100)) : 100;
+      return { current, next, nextMin, pct };
+    }
+
+    function totalStars() {
+      return Object.values(state.missionStars).reduce((a, b) => a + b, 0);
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => { el.style.display = "none"; }, 2800);
+    }
+
+    function unlockBadge(id) {
+      if (!state.badges.includes(id)) {
+        state.badges.push(id);
+        const b = BADGES.find(x => x.id === id);
+        if (b) showToast(`🏅 Lencana Baru Terbuka: ${b.emoji} ${b.name}!`);
+      }
+    }
+
+    function checkGlobalBadges() {
+      if (totalStars() >= 1) unlockBadge("first_step");
+      if (state.missionStars.m1 === 3) unlockBadge("eagle_eye");
+      if (state.missionStars.m2 === 3) unlockBadge("hunter");
+      if (state.missionStars.m3 >= 1) unlockBadge("sorter");
+      if (state.missionStars.m4 >= 1) unlockBadge("architect");
+      if (state.missionStars.m5 >= 1) unlockBadge("boss_slayer");
+      if (state.bestStreak >= 5) unlockBadge("combo_5");
+      if (totalStars() >= 12) unlockBadge("all_stars");
+    }
+
+    // ============== RENDER HUD & VIEWS ==============
+    function renderHUD() {
+      const lvl = getLevelInfo(state.xp);
+      document.getElementById("hudAvatar").textContent = state.avatar;
+      document.getElementById("hudName").textContent = state.name;
+      document.getElementById("hudClass").textContent = `Kelas ${state.cls}`;
+      document.getElementById("hudRank").textContent = `Lv. ${lvl.current.level} • ${lvl.current.title}`;
+      document.getElementById("hudStars").textContent = totalStars();
+      document.getElementById("hudCoins").textContent = state.coins;
+      document.getElementById("hudBestStreak").textContent = state.bestStreak;
+      document.getElementById("hudLevelText").textContent = `Level ${lvl.current.level}`;
+      document.getElementById("hudXpFill").style.width = `${lvl.pct}%`;
+      document.getElementById("hudXpText").textContent = lvl.next ? `${state.xp} / ${lvl.nextMin} XP` : `${state.xp} XP (Maks!)`;
+      document.getElementById("soundToggleBtn").textContent = state.sound ? "🔊 Suara" : "🔇 Senyap";
+    }
+
+    function switchView(viewName) {
+      clearBossTimer();
+      ["map", "arena", "materi", "shop", "leaderboard"].forEach(v => {
+        document.getElementById(`view-${v}`).classList.toggle("hidden", v !== viewName);
+      });
+      document.querySelectorAll(".nav-tab[data-view]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === viewName);
+      });
+      if (viewName === "map") renderMissionMap();
+      if (viewName === "shop") renderShopAndBadges();
+      if (viewName === "leaderboard") renderLeaderboard();
+    }
+
+    function renderMissionMap() {
+      const grid = document.getElementById("missionGrid");
+      grid.innerHTML = "";
+      MISSIONS.forEach(m => {
+        const stars = state.missionStars[m.id] || 0;
+        const starStr = "★".repeat(stars) + "☆".repeat(3 - stars);
+        const card = document.createElement("div");
+        card.className = `mission-card ${stars > 0 ? "completed" : ""} ${m.isBoss ? "boss-card" : ""}`;
+        card.innerHTML = `
+          <div>
+            <div class="mission-head">
+              <div class="mission-icon">${m.icon}</div>
+              <div style="text-align:right;">
+                <span class="mission-tag">${m.tag}</span>
+                <div class="mission-stars" style="color:${stars > 0 ? "#f59e0b" : "#cbd5e1"}; margin-top:4px;">${starStr}</div>
+              </div>
+            </div>
+            <h3>${m.title}</h3>
+            <p>${m.desc}</p>
+          </div>
+          <div class="mission-foot">
+            <span class="reward-pill">${m.reward}</span>
+            <button class="btn ${m.isBoss ? "btn-danger" : "btn-primary"}" data-start="${m.id}">
+              ${stars > 0 ? "🔄 Main Lagi" : "▶️ Mulai Misi"}
+            </button>
+          </div>
         `;
-        container.appendChild(qDiv);
+        card.querySelector("button").addEventListener("click", () => startMission(m.id));
+        grid.appendChild(card);
       });
     }
 
-    function renderUraian() {
-      const container = document.getElementById("uraianContainer");
-      container.innerHTML = "";
-      uraianQuestions.forEach(item => {
-        if (item.passage) {
-          const pBox = document.createElement("div");
-          pBox.className = "passage-box";
-          pBox.innerHTML = `<div class="passage-label">Bacalah teks berikut untuk soal nomor 17 sampai 19!</div><div>${item.passage}</div>`;
-          container.appendChild(pBox);
-        }
-        const qDiv = document.createElement("div");
-        qDiv.className = "question-item";
-        qDiv.innerHTML = `
-          <div class="q-title">${item.no}. ${item.q}</div>
-          <textarea id="uraian_${item.no}" rows="3" class="track-input" placeholder="Tulis jawaban uraianmu di sini..."></textarea>
-          <div class="feedback-box info" id="uraian-fb-${item.no}"></div>
+    function renderShopAndBadges() {
+      const shopGrid = document.getElementById("shopGrid");
+      shopGrid.innerHTML = "";
+      SHOP_ITEMS.forEach(item => {
+        const owned = state.inventory[item.id] || 0;
+        const div = document.createElement("div");
+        div.style.cssText = "border:2px solid #e2e8f0; border-radius:16px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:10px;";
+        div.innerHTML = `
+          <div>
+            <div style="font-size:2rem;">${item.emoji}</div>
+            <h3 style="margin:4px 0;">${item.name}</h3>
+            <p class="muted" style="margin:0; font-size:0.88rem;">${item.desc}</p>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px dashed #cbd5e1;">
+            <span style="font-weight:800; font-size:0.85rem;">Dimiliki: ${owned}</span>
+            <button class="btn btn-accent" ${state.coins < item.price ? "disabled" : ""}>Beli 🪙 ${item.price}</button>
+          </div>
         `;
-        container.appendChild(qDiv);
+        div.querySelector("button").addEventListener("click", () => {
+          if (state.coins < item.price) return;
+          state.coins -= item.price;
+          state.inventory[item.id] = (state.inventory[item.id] || 0) + 1;
+          AudioFX.ok();
+          saveState();
+          renderShopAndBadges();
+          showToast(`Berhasil membeli ${item.emoji} ${item.name}!`);
+        });
+        shopGrid.appendChild(div);
+      });
+
+      const badgeGrid = document.getElementById("badgeGrid");
+      badgeGrid.innerHTML = "";
+      document.getElementById("badgeCount").textContent = state.badges.length;
+      BADGES.forEach(b => {
+        const has = state.badges.includes(b.id);
+        const div = document.createElement("div");
+        div.className = `badge-card ${has ? "unlocked" : ""}`;
+        div.innerHTML = `
+          <div class="badge-emoji">${has ? b.emoji : "🔒"}</div>
+          <div style="font-weight:800;">${b.name}</div>
+          <div class="muted" style="font-size:0.84rem; margin-top:4px;">${b.desc}</div>
+        `;
+        badgeGrid.appendChild(div);
       });
     }
 
-    function updateProgress() {
-      let answered = 0;
-      pgGroups.forEach(g => g.questions.forEach(q => {
-        if (document.querySelector(`input[name="pg_${q.no}"]:checked`)) answered++;
-      }));
-      isianQuestions.forEach(q => {
-        if (document.getElementById(`isian_${q.no}`).value.trim() !== "") answered++;
-      });
-      uraianQuestions.forEach(q => {
-        if (document.getElementById(`uraian_${q.no}`).value.trim() !== "") answered++;
-      });
+    // ============== ACTIVE MISSION ENGINE ==============
+    let game = null;
 
-      const pct = Math.round((answered / 20) * 100);
-      document.getElementById("progressText").textContent = `Terjawab: ${answered} dari 20 soal`;
-      document.getElementById("progressFill").style.width = pct + "%";
-      document.getElementById("statusBadge").textContent = answered === 20 ? "Semua soal terisi!" : `${pct}% selesai`;
+    function clearBossTimer() {
+      if (game && game.timerId) {
+        clearInterval(game.timerId);
+        game.timerId = null;
+      }
     }
 
-    function normalizeText(str) {
-      return str.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+    function updatePowerupButtons() {
+      document.getElementById("countHint").textContent = state.inventory.hint || 0;
+      document.getElementById("count5050").textContent = state.inventory.f5050 || 0;
+      document.getElementById("countShield").textContent = state.inventory.shield || 0;
+
+      const isMcq = game && (game.mission.type === "mcq" || game.mission.type === "boss");
+      document.getElementById("useHintBtn").disabled = !game || game.stepDone || (state.inventory.hint || 0) <= 0 || game.hintUsed;
+      document.getElementById("use5050Btn").disabled = !game || !isMcq || game.stepDone || (state.inventory.f5050 || 0) <= 0 || game.f5050Used;
+      document.getElementById("useShieldBtn").disabled = !game || game.shieldActive || (state.inventory.shield || 0) <= 0;
     }
 
-    function evaluateQuiz() {
-      let pgPoints = 0;
-      pgGroups.forEach(g => g.questions.forEach(item => {
-        const selected = document.querySelector(`input[name="pg_${item.no}"]:checked`);
-        const labels = document.querySelectorAll(`#pg-opts-${item.no} .option-label`);
-        labels.forEach(l => l.classList.remove("correct", "wrong"));
+    function startMission(missionId) {
+      AudioFX.click();
+      const mission = MISSIONS.find(m => m.id === missionId);
+      let items = [];
+      if (mission.type === "click_sentence") items = M1_QUESTIONS;
+      if (mission.type === "mcq") items = M2_QUESTIONS;
+      if (mission.type === "sort") items = M3_ROUNDS;
+      if (mission.type === "builder") items = M4_ROUNDS;
+      if (mission.type === "boss") items = M5_QUESTIONS;
 
-        const fb = document.getElementById(`pg-fb-${item.no}`);
-        fb.classList.remove("ok", "bad");
+      game = {
+        mission,
+        items,
+        idx: 0,
+        score: 0,
+        maxScore: items.length,
+        combo: 0,
+        shieldActive: false,
+        stepDone: false,
+        hintUsed: false,
+        f5050Used: false,
+        lives: 3,
+        timeLeft: 90,
+        timerId: null
+      };
 
-        labels[item.answer].classList.add("correct");
-        if (selected && Number(selected.value) === item.answer) {
-          pgPoints += 2;
-          fb.className = "feedback-box show ok";
-          fb.innerHTML = `<strong>Benar (+2 poin)!</strong> ${item.explain}`;
-        } else {
-          if (selected) labels[Number(selected.value)].classList.add("wrong");
-          fb.className = "feedback-box show bad";
-          fb.innerHTML = `<strong>Belum tepat.</strong> Kunci: <strong>${letters[item.answer]}</strong>. ${item.explain}`;
+      switchView("arena");
+      document.getElementById("arenaTitle").textContent = `${mission.icon} ${mission.title}`;
+      if (mission.type === "boss") startBossTimer();
+      renderArenaStep();
+    }
+
+    function startBossTimer() {
+      clearBossTimer();
+      game.timerId = setInterval(() => {
+        if (!game) return;
+        game.timeLeft--;
+        const timerEl = document.getElementById("bossTimer");
+        if (timerEl) timerEl.textContent = `⏱️ ${game.timeLeft}d`;
+        if (game.timeLeft <= 0) {
+          clearBossTimer();
+          finishMission(false, "Waktu habis! Monster Paragraf Kacau kabur, ayo coba lagi!");
         }
-      }));
-
-      let isianPoints = 0;
-      isianQuestions.forEach(item => {
-        const val = normalizeText(document.getElementById(`isian_${item.no}`).value);
-        const fb = document.getElementById(`isian-fb-${item.no}`);
-        const isCorrect = val.length > 0 && item.accepted.some(acc => val.includes(acc));
-        if (isCorrect) {
-          isianPoints += 3;
-          fb.className = "feedback-box show ok";
-          fb.innerHTML = `<strong>Tepat (+3 poin)!</strong> Jawaban acuan: ${item.displayAnswer}.`;
-        } else {
-          fb.className = "feedback-box show bad";
-          fb.innerHTML = `<strong>Periksa kembali.</strong> Jawaban yang diharapkan: <strong>${item.displayAnswer}</strong>.`;
-        }
-      });
-
-      uraianQuestions.forEach(item => {
-        const fb = document.getElementById(`uraian-fb-${item.no}`);
-        fb.className = "feedback-box show info";
-        fb.innerHTML = `<strong>Panduan Jawaban / Rubrik (maks. 5 poin):</strong> ${item.rubric}`;
-      });
-
-      const name = document.getElementById("studentName").value.trim() || "Siswa";
-      const cls = document.getElementById("studentClass").value.trim() || "IV";
-      const totalAuto = pgPoints + isianPoints;
-      const pctAuto = Math.round((totalAuto / 35) * 100);
-
-      const summaryEl = document.getElementById("studentSummary");
-      summaryEl.textContent = "";
-      summaryEl.append("Peserta Didik: ");
-      const nameStrong = document.createElement("strong");
-      nameStrong.textContent = name;
-      summaryEl.append(nameStrong, " (Kelas: ");
-      const clsStrong = document.createElement("strong");
-      clsStrong.textContent = cls;
-      summaryEl.append(clsStrong, ")");
-      document.getElementById("pgScore").textContent = `${pgPoints} / 20`;
-      document.getElementById("isianScore").textContent = `${isianPoints} / 15`;
-      document.getElementById("autoTotal").textContent = `${totalAuto} / 35`;
-      document.getElementById("autoPercent").textContent = `${pctAuto}%`;
-
-      const banner = document.getElementById("scoreBanner");
-      banner.classList.add("show");
-      banner.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 1000);
     }
 
-    function resetQuiz() {
-      document.querySelectorAll('input[type="radio"]').forEach(el => { el.checked = false; });
-      document.querySelectorAll('.track-input').forEach(el => { el.value = ""; });
-      document.querySelectorAll('.option-label').forEach(el => el.classList.remove("correct", "wrong"));
-      document.querySelectorAll('.feedback-box').forEach(el => { el.className = "feedback-box"; el.innerHTML = ""; });
-      document.getElementById("scoreBanner").classList.remove("show");
-      updateProgress();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function registerCorrect(xpGain, explainHtml) {
+      AudioFX.ok();
+      game.score++;
+      game.combo++;
+      if (game.combo > state.bestStreak) state.bestStreak = game.combo;
+      const bonus = game.combo >= 3 ? Math.round(xpGain * 0.5) : 0;
+      state.xp += xpGain + bonus;
+      checkGlobalBadges();
+      saveState();
+
+      document.getElementById("arenaCombo").textContent = game.combo;
+      const fb = document.getElementById("arenaFeedback");
+      fb.className = "feedback-banner show ok";
+      fb.innerHTML = `<strong>✅ Hebat! (+${xpGain + bonus} XP${bonus ? ", Bonus Kombo!" : ""})</strong><br/>${explainHtml}`;
     }
 
-    // Tab switching
-    document.querySelectorAll(".tab-btn").forEach(btn => {
+    function registerWrong(explainHtml) {
+      AudioFX.bad();
+      let shieldMsg = "";
+      if (game.shieldActive) {
+        game.shieldActive = false;
+        shieldMsg = " 🛡️ <em>Perisai melindungimu: Combo & Nyawa tetap aman!</em>";
+      } else {
+        game.combo = 0;
+        if (game.mission.type === "boss") game.lives--;
+      }
+      document.getElementById("arenaCombo").textContent = game.combo;
+      const fb = document.getElementById("arenaFeedback");
+      fb.className = "feedback-banner show bad";
+      fb.innerHTML = `<strong>❌ Belum tepat.</strong>${shieldMsg}<br/>${explainHtml}`;
+
+      if (game.mission.type === "boss" && game.lives <= 0) {
+        clearBossTimer();
+        setTimeout(() => finishMission(false, "Nyawamu habis! Ayo baca Buku Saku Materi lalu tantang Bos lagi!"), 900);
+      }
+    }
+
+    function renderArenaStep() {
+      if (game.idx >= game.items.length) {
+        clearBossTimer();
+        finishMission(true);
+        return;
+      }
+
+      game.stepDone = false;
+      game.hintUsed = false;
+      game.f5050Used = false;
+
+      document.getElementById("arenaStepLabel").textContent = `${game.idx + 1} / ${game.items.length}`;
+      document.getElementById("arenaProgressFill").style.width = `${Math.round((game.idx / game.items.length) * 100)}%`;
+      document.getElementById("arenaCombo").textContent = game.combo;
+      document.getElementById("arenaFeedback").className = "feedback-banner";
+      document.getElementById("arenaActions").innerHTML = "";
+      updatePowerupButtons();
+
+      const body = document.getElementById("arenaBody");
+      const item = game.items[game.idx];
+      const type = game.mission.type;
+
+      if (type === "click_sentence") renderStepClickSentence(body, item);
+      else if (type === "mcq") renderStepMcq(body, item, false);
+      else if (type === "sort") renderStepSort(body, item);
+      else if (type === "builder") renderStepBuilder(body, item);
+      else if (type === "boss") renderStepMcq(body, item, true);
+    }
+
+    function appendNextButton(label = "Soal Berikutnya ➡️") {
+      const actions = document.getElementById("arenaActions");
+      actions.innerHTML = "";
+      const btn = document.createElement("button");
+      btn.className = "btn btn-primary";
+      btn.textContent = game.idx + 1 >= game.items.length ? "🏁 Lihat Hasil Misi" : label;
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const target = btn.dataset.tab;
-        document.getElementById("tab-quiz").classList.toggle("hidden", target !== "quiz");
-        document.getElementById("tab-materi").classList.toggle("hidden", target !== "materi");
+        AudioFX.click();
+        game.idx++;
+        renderArenaStep();
+      });
+      actions.appendChild(btn);
+    }
+
+    // ---- Misi 1: Click Sentence ----
+    function renderStepClickSentence(body, item) {
+      body.innerHTML = `
+        <h3 style="margin:0 0 8px;">${item.task}</h3>
+        <p class="muted" style="margin:0 0 10px; font-size:0.9rem;">Arahkan kursor atau ketuk salah satu kalimat di dalam kotak paragraf:</p>
+        <div class="passage-box" id="sentenceContainer"></div>
+      `;
+      const box = document.getElementById("sentenceContainer");
+      item.sentences.forEach((s, sIdx) => {
+        const span = document.createElement("span");
+        span.className = "sentence-chip";
+        span.dataset.sidx = sIdx;
+        span.textContent = s;
+        span.addEventListener("click", () => {
+          if (game.stepDone) return;
+          game.stepDone = true;
+          updatePowerupButtons();
+          const chips = box.querySelectorAll(".sentence-chip");
+          chips[item.targetIdx].classList.add("selected-main");
+          if (sIdx === item.targetIdx) {
+            registerCorrect(15, item.explain);
+          } else {
+            span.classList.add("wrong-pick");
+            registerWrong(item.explain);
+          }
+          appendNextButton();
+        });
+        box.appendChild(span);
+        box.append(" ");
+      });
+    }
+
+    // ---- Misi 2 & Misi 5: MCQ ----
+    function renderStepMcq(body, item, isBoss) {
+      let bossHtml = "";
+      if (isBoss) {
+        const hpLeft = Math.max(0, game.items.length - game.score);
+        const hpPct = Math.round((hpLeft / game.items.length) * 100);
+        const hearts = "❤️".repeat(Math.max(0, game.lives)) + "🖤".repeat(Math.max(0, 3 - game.lives));
+        bossHtml = `
+          <div class="boss-panel">
+            <div>
+              <div style="font-weight:800; font-size:1.05rem;">👾 Monster Paragraf Kacau</div>
+              <div class="boss-hp-track"><div class="boss-hp-fill" style="width:${hpPct}%"></div></div>
+              <div style="font-size:0.8rem; opacity:0.9; margin-top:3px;">HP Bos: ${hpLeft} / ${game.items.length}</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="timer-pill" id="bossHearts">${hearts}</div>
+              <div class="timer-pill" id="bossTimer">⏱️ ${game.timeLeft}d</div>
+            </div>
+          </div>
+        `;
+      }
+
+      const passageHtml = item.passage
+        ? `<div class="passage-box"><div class="passage-badge">Bacaan</div><div>${item.passage}</div></div>`
+        : "";
+
+      body.innerHTML = `
+        ${bossHtml}
+        ${passageHtml}
+        <h3 style="margin:0 0 12px;">${item.q}</h3>
+        <div class="option-grid" id="mcqOptions"></div>
+      `;
+
+      const letters = ["A", "B", "C", "D"];
+      const grid = document.getElementById("mcqOptions");
+      item.options.forEach((opt, oIdx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.dataset.oidx = oIdx;
+        btn.innerHTML = `<span class="opt-key">${letters[oIdx]}</span><span>${opt}</span>`;
+        btn.addEventListener("click", () => {
+          if (game.stepDone) return;
+          game.stepDone = true;
+          updatePowerupButtons();
+          const allBtns = grid.querySelectorAll(".option-btn");
+          allBtns.forEach(b => b.disabled = true);
+          allBtns[item.answer].classList.add("correct");
+          if (oIdx === item.answer) {
+            registerCorrect(isBoss ? 18 : 18, item.explain);
+          } else {
+            btn.classList.add("wrong");
+            registerWrong(item.explain);
+          }
+          if (!(isBoss && game.lives <= 0)) appendNextButton();
+        });
+        grid.appendChild(btn);
+      });
+    }
+
+    // ---- Misi 3: Sort Cards ----
+    function renderStepSort(body, item) {
+      const picks = {};
+      body.innerHTML = `
+        <h3 style="margin:0 0 6px;">${item.title}</h3>
+        <div class="passage-box"><div class="passage-badge">Paragraf Acuan</div><div>${item.passage}</div></div>
+        <p style="margin:0 0 10px; font-weight:700;">Kelompokkan setiap kartu pernyataan di bawah ini (1 Ide Pokok, 2 Ide Pendukung, 1 Bukan dari Paragraf):</p>
+        <div class="sort-pool" id="sortPool"></div>
+      `;
+
+      const pool = document.getElementById("sortPool");
+      item.cards.forEach((card, cIdx) => {
+        const div = document.createElement("div");
+        div.className = "sort-card";
+        div.dataset.cidx = cIdx;
+        div.innerHTML = `
+          <div style="flex:1; min-width:210px; font-weight:600;">${card.text}</div>
+          <div class="sort-controls">
+            <button class="bucket-btn" data-role="pokok">🎯 Ide Pokok</button>
+            <button class="bucket-btn" data-role="pendukung">📌 Ide Pendukung</button>
+            <button class="bucket-btn" data-role="bukan">🚫 Bukan</button>
+          </div>
+        `;
+        div.querySelectorAll(".bucket-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            if (game.stepDone) return;
+            AudioFX.click();
+            picks[cIdx] = btn.dataset.role;
+            div.querySelectorAll(".bucket-btn").forEach(b => b.classList.remove("active-pokok", "active-pendukung", "active-bukan"));
+            btn.classList.add(`active-${btn.dataset.role}`);
+            checkBtn.disabled = Object.keys(picks).length < item.cards.length;
+          });
+        });
+        pool.appendChild(div);
+      });
+
+      const actions = document.getElementById("arenaActions");
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "btn btn-success";
+      checkBtn.textContent = "✅ Periksa Klasifikasi";
+      checkBtn.disabled = true;
+      checkBtn.addEventListener("click", () => {
+        if (game.stepDone) return;
+        game.stepDone = true;
+        updatePowerupButtons();
+        let allCorrect = true;
+        const rows = pool.querySelectorAll(".sort-card");
+        item.cards.forEach((card, cIdx) => {
+          if (picks[cIdx] === card.role) {
+            rows[cIdx].classList.add("ok");
+          } else {
+            rows[cIdx].classList.add("bad");
+            allCorrect = false;
+          }
+        });
+        if (allCorrect) {
+          registerCorrect(30, "Semua kartu berhasil kamu pilah ke kategori yang tepat!");
+        } else {
+          registerWrong("Ada kartu yang belum tepat kategorinya. Periksa kotak hijau & merah di atas ya!");
+        }
+        appendNextButton();
+      });
+      actions.appendChild(checkBtn);
+    }
+
+    // ---- Misi 4: Paragraph Builder ----
+    function renderStepBuilder(body, item) {
+      const shuffled = [...item.pieces].sort(() => Math.random() - 0.5);
+      let chosen = [];
+
+      body.innerHTML = `
+        <h3 style="margin:0 0 6px;">${item.title}</h3>
+        <div class="passage-box" style="background:#f5f3ff; border-color:#c4b5fd; border-left-color:#7c3aed;">
+          <div class="passage-badge" style="background:#ede9fe; color:#5b21b6;">🎯 Target Ide Pokok</div>
+          <div style="font-weight:800; font-size:1.05rem;">"${item.targetTopic}"</div>
+        </div>
+        <p style="margin:0 0 8px; font-weight:700;">Klik kalimat di bawah untuk menyusun paragraf deduktif (3 kalimat: 1 Kalimat Utama di awal + 2 Kalimat Pendukung). Tinggalkan 1 kalimat penyusup!</p>
+        <div class="builder-zone" id="builderZone"></div>
+        <div style="display:grid; gap:8px;" id="builderBank"></div>
+      `;
+
+      const zone = document.getElementById("builderZone");
+      const bank = document.getElementById("builderBank");
+      const actions = document.getElementById("arenaActions");
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "btn btn-success";
+      checkBtn.textContent = "🧱 Uji Paragraf!";
+      checkBtn.disabled = true;
+
+      function redraw() {
+        zone.innerHTML = "";
+        if (chosen.length === 0) {
+          zone.innerHTML = `<div class="muted" style="text-align:center; padding:18px; font-weight:700;">Area Rakit Paragraf (Klik kalimat di bawah untuk menambahkan ke sini)</div>`;
+        } else {
+          chosen.forEach((p, idx) => {
+            const chip = document.createElement("div");
+            chip.className = "builder-chip";
+            chip.innerHTML = `<span class="order-badge">${idx + 1}</span><span style="flex:1;">${p.text}</span><span class="muted" style="font-size:0.8rem;">✖ Lepas</span>`;
+            chip.addEventListener("click", () => {
+              if (game.stepDone) return;
+              AudioFX.click();
+              chosen = chosen.filter(x => x.id !== p.id);
+              redraw();
+            });
+            zone.appendChild(chip);
+          });
+        }
+
+        bank.innerHTML = "";
+        shuffled.filter(p => !chosen.some(c => c.id === p.id)).forEach(p => {
+          const chip = document.createElement("div");
+          chip.className = "builder-chip";
+          chip.innerHTML = `<span style="flex:1;">${p.text}</span><span style="color:var(--primary); font-weight:800; font-size:0.85rem;">+ Pilih</span>`;
+          chip.addEventListener("click", () => {
+            if (game.stepDone || chosen.length >= 3) return;
+            AudioFX.click();
+            chosen.push(p);
+            redraw();
+          });
+          bank.appendChild(chip);
+        });
+
+        checkBtn.disabled = chosen.length !== 3;
+      }
+
+      checkBtn.addEventListener("click", () => {
+        if (game.stepDone) return;
+        game.stepDone = true;
+        updatePowerupButtons();
+        const hasIntruder = chosen.some(p => p.type === "intruder");
+        const firstIsMain = chosen[0] && chosen[0].type === "main";
+        if (!hasIntruder && firstIsMain) {
+          registerCorrect(35, "Sempurna! Kalimat utama berada di awal dan kedua kalimat pendukung nyambung dengan topik.");
+        } else if (hasIntruder) {
+          registerWrong("Ups! Kamu masih memasukkan kalimat penyusup yang tidak nyambung dengan topik.");
+        } else {
+          registerWrong("Kalimatmu sudah tepat bertema sama, tetapi untuk paragraf deduktif letakkan Kalimat Utama di urutan ke-1!");
+        }
+        appendNextButton();
+      });
+
+      actions.appendChild(checkBtn);
+      redraw();
+    }
+
+    // ---- Power-Ups ----
+    document.getElementById("useHintBtn").addEventListener("click", () => {
+      if (!game || game.stepDone || (state.inventory.hint || 0) <= 0 || game.hintUsed) return;
+      state.inventory.hint--;
+      game.hintUsed = true;
+      AudioFX.click();
+      saveState();
+      updatePowerupButtons();
+      const item = game.items[game.idx];
+      const fb = document.getElementById("arenaFeedback");
+      fb.className = "feedback-banner show hint";
+      fb.innerHTML = `<strong>💡 Petunjuk Detektif:</strong> ${item.hint}`;
+      if (game.mission.type === "click_sentence") {
+        const targetChip = document.querySelectorAll("#sentenceContainer .sentence-chip")[item.targetIdx];
+        if (targetChip) targetChip.classList.add("hint-glow");
+      }
+    });
+
+    document.getElementById("use5050Btn").addEventListener("click", () => {
+      if (!game || game.stepDone || (state.inventory.f5050 || 0) <= 0 || game.f5050Used) return;
+      const item = game.items[game.idx];
+      if (!item || typeof item.answer !== "number") return;
+      state.inventory.f5050--;
+      game.f5050Used = true;
+      AudioFX.click();
+      saveState();
+      updatePowerupButtons();
+      const wrongIdxs = [0, 1, 2, 3].filter(i => i !== item.answer).sort(() => Math.random() - 0.5).slice(0, 2);
+      const btns = document.querySelectorAll("#mcqOptions .option-btn");
+      wrongIdxs.forEach(i => { if (btns[i]) btns[i].classList.add("eliminated"); });
+    });
+
+    document.getElementById("useShieldBtn").addEventListener("click", () => {
+      if (!game || game.shieldActive || (state.inventory.shield || 0) <= 0) return;
+      state.inventory.shield--;
+      game.shieldActive = true;
+      AudioFX.ok();
+      saveState();
+      updatePowerupButtons();
+      showToast("🛡️ Perisai Combo aktif untuk 1 kesalahan!");
+    });
+
+    // ---- Finish Mission ----
+    function finishMission(completed, customFailMsg = "") {
+      clearBossTimer();
+      document.getElementById("arenaProgressFill").style.width = "100%";
+      document.getElementById("arenaFeedback").className = "feedback-banner";
+      document.getElementById("arenaActions").innerHTML = "";
+
+      const pct = Math.round((game.score / game.maxScore) * 100);
+      let stars = 0;
+      if (completed) {
+        if (pct >= 90) stars = 3;
+        else if (pct >= 65) stars = 2;
+        else if (pct >= 40) stars = 1;
+      }
+      if (game.mission.type === "boss" && completed && game.lives > 0) {
+        stars = Math.max(stars, game.lives === 3 ? 3 : 2);
+      }
+
+      const coinReward = completed ? (stars * 8 + 5) : 5;
+      state.coins += coinReward;
+      if (stars > (state.missionStars[game.mission.id] || 0)) {
+        state.missionStars[game.mission.id] = stars;
+      }
+      checkGlobalBadges();
+      saveState();
+
+      if (stars >= 2) {
+        AudioFX.win();
+        launchConfetti();
+      } else {
+        AudioFX.click();
+      }
+
+      const starVisual = "⭐".repeat(stars) + "☆".repeat(3 - stars);
+      const body = document.getElementById("arenaBody");
+      body.innerHTML = `
+        <div style="text-align:center; padding:14px 8px;">
+          <div style="font-size:3.2rem; margin-bottom:6px;">${completed && stars > 0 ? "🎉" : "💪"}</div>
+          <h2 style="margin:0 0 6px;">${completed && stars > 0 ? "Misi Berhasil Dituntaskan!" : "Terus Semangat, Detektif!"}</h2>
+          <p class="muted" style="margin:0 0 14px;">${customFailMsg || `Kamu menjawab benar ${game.score} dari ${game.maxScore} tantangan (${pct}%).`}</p>
+          <div style="font-size:2.2rem; letter-spacing:6px; margin-bottom:14px;">${starVisual}</div>
+          <div style="display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:18px;">
+            <span class="reward-pill">🪙 +${coinReward} Koin</span>
+            <span class="reward-pill" style="background:#dbeafe; color:#1e3a8a;">🔥 Combo Terbaikmu: ${state.bestStreak}</span>
+          </div>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="replayBtn">🔄 Main Lagi</button>
+            <button class="btn btn-success" id="backMapBtn">🗺️ Kembali ke Peta Misi</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("replayBtn").addEventListener("click", () => startMission(game.mission.id));
+      document.getElementById("backMapBtn").addEventListener("click", () => switchView("map"));
+    }
+
+    // ============== MINI LAB MATERI ==============
+    document.querySelectorAll("#miniLabBox .sentence-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        AudioFX.click();
+        document.querySelectorAll("#miniLabBox .sentence-chip").forEach(c => c.classList.remove("selected-main", "selected-support"));
+        const res = document.getElementById("miniLabResult");
+        if (chip.dataset.role === "main") {
+          chip.classList.add("selected-main");
+          res.className = "feedback-banner show ok";
+          res.innerHTML = "<strong>🎯 Kalimat Utama!</strong> Kalimat ini memuat ide pokok: <em>manfaat merawat tanaman di halaman rumah</em>.";
+        } else {
+          chip.classList.add("selected-support");
+          res.className = "feedback-banner show hint";
+          res.innerHTML = "<strong>📌 Kalimat Penjelas!</strong> Kalimat ini memuat ide pendukung yang menjelaskan manfaat tanaman secara lebih rinci.";
+        }
       });
     });
 
-    renderPG();
-    renderIsian();
-    renderUraian();
-    updateProgress();
+    // ============== LEADERBOARD & REPORT ==============
+    function loadLeaderboard() {
+      try {
+        return JSON.parse(localStorage.getItem(LB_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
 
-    document.getElementById("tab-quiz").addEventListener("change", updateProgress);
-    document.getElementById("tab-quiz").addEventListener("input", updateProgress);
-    document.getElementById("submitBtn").addEventListener("click", evaluateQuiz);
-    document.getElementById("printBtn").addEventListener("click", () => window.print());
-    document.getElementById("resetBtn").addEventListener("click", resetQuiz);
+    function renderLeaderboard() {
+      const list = loadLeaderboard().sort((a, b) => (b.xp - a.xp) || (b.stars - a.stars));
+      const tbody = document.getElementById("lbBody");
+      tbody.innerHTML = "";
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="muted" style="text-align:center; padding:18px;">Belum ada catatan skor. Klik <strong>"Simpan Skorku ke Papan"</strong> setelah bermain!</td></tr>`;
+        return;
+      }
+      list.forEach((row, idx) => {
+        const tr = document.createElement("tr");
+        const medal = idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : `${idx + 1}`;
+        tr.innerHTML = `
+          <td><strong>${medal}</strong></td>
+          <td></td>
+          <td></td>
+          <td>Lv. ${row.level} (${row.xp} XP)</td>
+          <td>⭐ ${row.stars}/15</td>
+          <td>🏅 ${row.badges}/8</td>
+        `;
+        tr.children[1].textContent = `${row.avatar} ${row.name}`;
+        tr.children[2].textContent = row.cls;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("saveToLbBtn").addEventListener("click", () => {
+      const list = loadLeaderboard();
+      const lvl = getLevelInfo(state.xp).current.level;
+      const entry = {
+        name: state.name,
+        cls: state.cls,
+        avatar: state.avatar,
+        xp: state.xp,
+        level: lvl,
+        stars: totalStars(),
+        badges: state.badges.length
+      };
+      const existingIdx = list.findIndex(x => x.name.toLowerCase() === state.name.toLowerCase() && x.cls.toLowerCase() === state.cls.toLowerCase());
+      if (existingIdx >= 0) list[existingIdx] = entry;
+      else list.push(entry);
+      localStorage.setItem(LB_KEY, JSON.stringify(list));
+      AudioFX.ok();
+      renderLeaderboard();
+      showToast("💾 Skormu berhasil disimpan ke Papan Peringkat!");
+    });
+
+    document.getElementById("copyReportBtn").addEventListener("click", async () => {
+      const lvl = getLevelInfo(state.xp).current;
+      const text = [
+        `📊 LAPORAN BELAJAR GAMIFIKASI BAHASA INDONESIA KELAS IV`,
+        `Materi: Ide Pokok dan Ide Pendukung`,
+        `Nama: ${state.name} (${state.avatar})`,
+        `Kelas: ${state.cls}`,
+        `Level: ${lvl.level} (${lvl.title}) — ${state.xp} XP`,
+        `Total Bintang: ${totalStars()} / 15`,
+        `Lencana Terbuka: ${state.badges.length} / 8`,
+        `Kombo Terbaik: ${state.bestStreak}x`
+      ].join("\n");
+      try {
+        await navigator.clipboard.writeText(text);
+        AudioFX.ok();
+        showToast("📋 Laporan tersalin! Siap ditempel untuk Bapak/Ibu Guru.");
+      } catch {
+        alert(text);
+      }
+    });
+
+    // ============== PROFILE MODAL ==============
+    let tempAvatar = state.avatar;
+
+    function openProfileModal() {
+      tempAvatar = state.avatar;
+      document.getElementById("inputName").value = state.name === "Detektif Muda" ? "" : state.name;
+      document.getElementById("inputClass").value = state.cls;
+      const picker = document.getElementById("avatarPicker");
+      picker.innerHTML = "";
+      AVATARS.forEach(av => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `avatar-opt ${av === tempAvatar ? "selected" : ""}`;
+        btn.textContent = av;
+        btn.addEventListener("click", () => {
+          tempAvatar = av;
+          picker.querySelectorAll(".avatar-opt").forEach(x => x.classList.remove("selected"));
+          btn.classList.add("selected");
+        });
+        picker.appendChild(btn);
+      });
+      document.getElementById("profileModal").classList.add("show");
+    }
+
+    document.getElementById("editProfileBtn").addEventListener("click", openProfileModal);
+    document.getElementById("hudAvatar").addEventListener("click", openProfileModal);
+    document.getElementById("closeModalBtn").addEventListener("click", () => {
+      document.getElementById("profileModal").classList.remove("show");
+    });
+
+    document.getElementById("saveProfileBtn").addEventListener("click", () => {
+      const n = document.getElementById("inputName").value.trim() || "Detektif Muda";
+      const c = document.getElementById("inputClass").value.trim() || "IV-A";
+      state.name = n;
+      state.cls = c;
+      state.avatar = tempAvatar;
+      AudioFX.ok();
+      saveState();
+      document.getElementById("profileModal").classList.remove("show");
+      showToast(`Selamat datang, ${state.avatar} ${state.name}!`);
+    });
+
+    document.getElementById("resetProgressBtn").addEventListener("click", () => {
+      if (confirm("Yakin ingin mengulang semua XP, bintang, dan lencana dari awal?")) {
+        state = structuredClone(defaultState);
+        saveState();
+        document.getElementById("profileModal").classList.remove("show");
+        switchView("map");
+        showToast("Progres telah diatur ulang.");
+      }
+    });
+
+    // ============== GLOBAL EVENTS ==============
+    document.querySelectorAll(".nav-tab[data-view]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        AudioFX.click();
+        switchView(btn.dataset.view);
+      });
+    });
+
+    document.getElementById("exitMissionBtn").addEventListener("click", () => {
+      AudioFX.click();
+      switchView("map");
+    });
+
+    document.getElementById("soundToggleBtn").addEventListener("click", () => {
+      state.sound = !state.sound;
+      saveState();
+      if (state.sound) AudioFX.click();
+    });
+
+    // ============== INIT ==============
+    renderHUD();
+    renderMissionMap();
   </script>
 </body>
 </html>

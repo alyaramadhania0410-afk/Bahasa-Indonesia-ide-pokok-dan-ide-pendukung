@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluasi Bahasa Indonesia Kelas IV — Ide Pokok &amp; Ide Pendukung</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --accent: #f59e0b;
+      --accent-soft: #fef3c7;
+      --success: #16a34a;
+      --success-soft: #dcfce7;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+
+    header.hero {
+      background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 60%, #0ea5e9 100%);
+      color: #fff;
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    header.hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      line-height: 1.25;
+    }
+
+    header.hero p {
+      margin: 0;
+      opacity: 0.94;
+      font-size: 0.98rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      color: var(--primary-dark);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.96rem;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .progress-wrap {
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2563eb, #0ea5e9);
+      transition: width 0.25s ease;
+    }
+
+    .passage-box {
+      background: var(--primary-soft);
+      border-left: 4px solid var(--primary);
+      padding: 14px 16px;
+      border-radius: 0 12px 12px 0;
+      margin: 12px 0 16px;
+      font-size: 1rem;
+    }
+
+    .passage-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .question-item {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+
+    .question-item:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .q-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #fff;
+    }
+
+    .option-label:hover {
+      border-color: #93c5fd;
+      background: #f8fafc;
+    }
+
+    .option-label input[type="radio"] {
+      margin-top: 4px;
+      accent-color: var(--primary);
+    }
+
+    .option-label.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .option-label.wrong {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .feedback-box {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      display: none;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    .feedback-box.ok {
+      background: var(--success-soft);
+      border: 1px solid #86efac;
+      color: #14532d;
+    }
+
+    .feedback-box.bad {
+      background: var(--danger-soft);
+      border: 1px solid #fca5a5;
+      color: #7f1d1d;
+    }
+
+    .feedback-box.info {
+      background: var(--accent-soft);
+      border: 1px solid #fcd34d;
+      color: #78350f;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 0.96rem;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .score-banner {
+      display: none;
+      background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%);
+      border: 2px solid #93c5fd;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .score-banner.show {
+      display: block;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .score-stat {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .score-stat .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .score-stat .lbl {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .highlight-main {
+      background: #fef08a;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .highlight-support {
+      background: #dbeafe;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media print {
+      .tabs, .progress-wrap, .actions, .no-print {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+      }
+      .card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+      header.hero {
+        color: #000;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="badge">Bahasa Indonesia • Kelas IV SD • Kurikulum Merdeka</div>
+      <h1>Evaluasi: Ide Pokok dan Ide Pendukung</h1>
+      <p>Latihan dan evaluasi interaktif untuk melatih kemampuan menemukan kalimat utama, ide pokok, dan ide pendukung dalam paragraf.</p>
+    </header>
+
+    <div class="tabs no-print">
+      <button class="tab-btn active" data-tab="quiz">📝 Kerjakan Evaluasi</button>
+      <button class="tab-btn" data-tab="materi">📖 Ringkasan Materi</button>
+      <a href="index.html" class="tab-btn" style="text-decoration:none; display:inline-flex; align-items:center;">🎮 Mode Gamifikasi</a>
+    </div>
+
+    <!-- TAB MATERI -->
+    <section id="tab-materi" class="hidden">
+      <div class="card">
+        <h2>Apa itu Ide Pokok dan Ide Pendukung?</h2>
+        <div class="grid-2">
+          <div class="passage-box" style="margin:0;">
+            <div class="passage-label">Ide Pokok (Gagasan Utama)</div>
+            <p style="margin:0;">Inti atau pokok pembahasan dalam sebuah paragraf. Dalam satu paragraf hanya terdapat <strong>satu ide pokok</strong> yang menjadi dasar pengembangan paragraf.</p>
+          </div>
+          <div class="passage-box" style="margin:0; background:#fef3c7; border-left-color:#f59e0b;">
+            <div class="passage-label" style="color:#b45309;">Ide Pendukung (Gagasan Penjelas)</div>
+            <p style="margin:0;">Uraian tambahan yang berfungsi <strong>menjelaskan, memerinci, atau memberi contoh</strong> dari ide pokok agar paragraf menjadi lengkap dan mudah dipahami.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Jenis Paragraf Berdasarkan Letak Kalimat Utama</h2>
+        <ul>
+          <li><strong>Paragraf Deduktif:</strong> Kalimat utama berada di <strong>awal paragraf</strong>, diikuti kalimat-kalimat penjelas.</li>
+          <li><strong>Paragraf Induktif:</strong> Kalimat penjelas disampaikan lebih dahulu, lalu ditutup dengan kalimat utama (sering berupa simpulan) di <strong>akhir paragraf</strong>.</li>
+        </ul>
+        <div class="passage-box">
+          <div class="passage-label">Contoh Analisis Paragraf Deduktif</div>
+          <p style="margin:0;">
+            <span class="highlight-main">Merawat tanaman di halaman rumah memberikan banyak manfaat.</span>
+            <span class="highlight-support">Udara di sekitar rumah menjadi lebih sejuk dan segar.</span>
+            <span class="highlight-support">Selain itu, halaman rumah terlihat lebih indah dan asri.</span>
+          </p>
+          <p style="margin:10px 0 0; font-size:0.9rem;">
+            🟨 <strong>Kuning:</strong> Kalimat Utama (memuat ide pokok: <em>manfaat merawat tanaman di halaman rumah</em>)<br />
+            🟦 <strong>Biru:</strong> Kalimat Penjelas (memuat ide pendukung)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB KUIS -->
+    <section id="tab-quiz">
+      <div class="card">
+        <h2>Identitas Peserta Didik</h2>
+        <div class="grid-2">
+          <div>
+            <label class="field-label" for="studentName">Nama Lengkap</label>
+            <input type="text" id="studentName" placeholder="Contoh: Alya Ramadhania" />
+          </div>
+          <div>
+            <label class="field-label" for="studentClass">Kelas / No. Absen</label>
+            <input type="text" id="studentClass" placeholder="Contoh: IV-A / 05" />
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span id="progressText">Terjawab: 0 dari 20 soal</span>
+          <span id="statusBadge" style="color: var(--primary-dark);">Siap mengerjakan</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div id="scoreBanner" class="score-banner">
+        <h2 style="margin-top:0; color:#0f172a;">🎉 Hasil Evaluasi</h2>
+        <p id="studentSummary" style="margin:4px 0 0;"></p>
+        <div class="score-grid">
+          <div class="score-stat">
+            <div class="num" id="pgScore">0 / 20</div>
+            <div class="lbl">Pilihan Ganda (10 soal)</div>
+          </div>
+          <div class="score-stat">
+            <div class="num" id="isianScore">0 / 15</div>
+            <div class="lbl">Isian Singkat (5 soal)</div>
+          </div>
+          <div class="score-stat">
+            <div class="num" id="autoTotal">0 / 35</div>
+            <div class="lbl">Total Nilai Otomatis (A + B)</div>
+          </div>
+          <div class="score-stat">
+            <div class="num" id="autoPercent">0%</div>
+            <div class="lbl">Ketuntasan Bagian A &amp; B</div>
+          </div>
+        </div>
+        <p style="margin:12px 0 0; font-size:0.9rem; color:#334155;">
+          <strong>Catatan:</strong> Bagian C (Uraian, maks. 25 poin) diperiksa oleh guru atau dicocokkan dengan rubrik jawaban yang muncul di bawah setiap soal uraian. Gunakan tombol <em>Cetak / Simpan PDF</em> untuk mengumpulkan hasil kerja.
+        </p>
+      </div>
+
+      <!-- BAGIAN A -->
+      <div class="card" id="sectionA">
+        <h2>Bagian A. Pilihan Ganda (10 Soal)</h2>
+        <p style="color:var(--muted); margin-top:-6px;">Pilihlah satu jawaban yang paling tepat!</p>
+        <div id="pgContainer"></div>
+      </div>
+
+      <!-- BAGIAN B -->
+      <div class="card" id="sectionB">
+        <h2>Bagian B. Isian Singkat (5 Soal)</h2>
+        <p style="color:var(--muted); margin-top:-6px;">Ketikkan jawaban yang singkat dan tepat pada kolom yang tersedia.</p>
+        <div id="isianContainer"></div>
+      </div>
+
+      <!-- BAGIAN C -->
+      <div class="card" id="sectionC">
+        <h2>Bagian C. Uraian (5 Soal)</h2>
+        <p style="color:var(--muted); margin-top:-6px;">Tuliskan jawabanmu dengan kalimat yang jelas dan lengkap.</p>
+        <div id="uraianContainer"></div>
+      </div>
+
+      <div class="actions no-print">
+        <button class="btn btn-primary" id="submitBtn">✅ Selesai &amp; Periksa Jawaban</button>
+        <button class="btn btn-success" id="printBtn">🖨️ Cetak / Simpan PDF</button>
+        <button class="btn btn-secondary" id="resetBtn">🔄 Ulangi Kuis</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const pgGroups = [
+      {
+        passage: "Warga Kampung Melati rutin melaksanakan kerja bakti setiap hari Minggu pagi. Bapak-bapak membersihkan selokan agar aliran air tetap lancar. Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik untuk didaur ulang. Sementara itu, anak-anak ikut membantu menyiram tanaman di taman kampung.",
+        label: "Bacalah paragraf berikut untuk menjawab soal nomor 1 dan 2!",
+        questions: [
+          {
+            no: 1,
+            q: "Ide pokok paragraf di atas adalah ....",
+            options: [
+              "Bapak-bapak membersihkan selokan Kampung Melati",
+              "Ibu-ibu mengumpulkan sampah plastik untuk didaur ulang",
+              "Kegiatan kerja bakti rutin warga Kampung Melati pada Minggu pagi",
+              "Anak-anak menyiram tanaman di taman kampung"
+            ],
+            answer: 2,
+            explain: "Kalimat utama ada di awal paragraf: 'Warga Kampung Melati rutin melaksanakan kerja bakti setiap hari Minggu pagi.' Pilihan lain adalah ide pendukung."
+          },
+          {
+            no: 2,
+            q: "Berikut ini yang merupakan ide pendukung pada paragraf di atas adalah ....",
+            options: [
+              "Kerja bakti dilaksanakan setiap hari Minggu pagi",
+              "Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik",
+              "Warga Kampung Melati sangat rukun dan kompak",
+              "Kerja bakti membuat kampung menjadi ramai"
+            ],
+            answer: 1,
+            explain: "Kalimat 'Ibu-ibu menyapu halaman dan mengumpulkan sampah plastik' menjelaskan kegiatan kerja bakti yang disebutkan pada kalimat utama."
+          }
+        ]
+      },
+      {
+        passage: "Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah. Ibu biasa menyiapkan nasi hangat, telur dadar, dan segelas susu. Dengan sarapan, tubuh Edo terasa lebih bugar dan bersemangat mengikuti pelajaran di kelas. Selain itu, Edo juga lebih mudah berkonsentrasi saat guru menjelaskan materi.",
+        label: "Bacalah paragraf berikut untuk menjawab soal nomor 3 dan 4!",
+        questions: [
+          {
+            no: 3,
+            q: "Kalimat utama pada paragraf tersebut terletak pada ....",
+            options: [
+              "awal paragraf",
+              "tengah paragraf",
+              "akhir paragraf",
+              "awal dan akhir paragraf"
+            ],
+            answer: 0,
+            explain: "Kalimat pertama ('Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah.') adalah kalimat utama karena dijelaskan oleh kalimat-kalimat berikutnya."
+          },
+          {
+            no: 4,
+            q: "Kalimat berikut yang berfungsi sebagai kalimat penjelas adalah ....",
+            options: [
+              "Setiap pagi, Edo selalu sarapan sebelum berangkat ke sekolah.",
+              "Ibu biasa menyiapkan nasi hangat, telur dadar, dan segelas susu.",
+              "Sarapan merupakan kebiasaan baik bagi semua anak sekolah.",
+              "Edo berangkat ke sekolah pukul setengah tujuh pagi."
+            ],
+            answer: 1,
+            explain: "Kalimat tentang menu sarapan yang disiapkan Ibu merinci kalimat utama mengenai kebiasaan sarapan Edo."
+          }
+        ]
+      },
+      {
+        passage: "Air bersih sangat dibutuhkan untuk minum dan memasak setiap hari. Air juga digunakan untuk mandi, mencuci pakaian, dan membersihkan rumah. Bagi petani, air membantu mengairi sawah agar tanaman padi tumbuh subur. Jadi, air memiliki banyak manfaat bagi kehidupan manusia.",
+        label: "Bacalah paragraf berikut untuk menjawab soal nomor 5 dan 6!",
+        questions: [
+          {
+            no: 5,
+            q: "Ide pokok paragraf di atas adalah ....",
+            options: [
+              "Air digunakan untuk mandi dan mencuci pakaian",
+              "Petani membutuhkan air untuk mengairi sawah",
+              "Air memiliki banyak manfaat bagi kehidupan manusia",
+              "Air bersih harus dimasak sebelum diminum"
+            ],
+            answer: 2,
+            explain: "Paragraf disimpulkan pada kalimat terakhir: 'Jadi, air memiliki banyak manfaat bagi kehidupan manusia.'"
+          },
+          {
+            no: 6,
+            q: "Berdasarkan letak kalimat utamanya, paragraf di atas termasuk jenis paragraf ....",
+            options: [
+              "deduktif",
+              "induktif",
+              "naratif",
+              "deskriptif"
+            ],
+            answer: 1,
+            explain: "Kalimat utama terletak di akhir paragraf (ditandai kata simpulan 'Jadi'), sehingga disebut paragraf induktif."
+          }
+        ]
+      },
+      {
+        passage: "Perpustakaan sekolahku merupakan tempat yang nyaman untuk membaca. Ruangannya bersih, terang, dan dilengkapi pendingin udara. Rak-rak buku tertata rapi sesuai jenisnya, mulai dari buku pelajaran hingga buku cerita bergambar. Tidak heran jika banyak siswa betah berlama-lama di perpustakaan saat jam istirahat.",
+        label: "Bacalah paragraf berikut untuk menjawab soal nomor 7 dan 8!",
+        questions: [
+          {
+            no: 7,
+            q: "Gagasan utama (ide pokok) yang tepat untuk paragraf di atas adalah ....",
+            options: [
+              "Banyak siswa membaca saat jam istirahat",
+              "Rak buku di perpustakaan berisi buku cerita bergambar",
+              "Ruangan perpustakaan dilengkapi pendingin udara",
+              "Perpustakaan sekolah yang nyaman untuk membaca"
+            ],
+            answer: 3,
+            explain: "Kalimat utama berada di awal paragraf tentang kenyamanan perpustakaan sekolah sebagai tempat membaca."
+          },
+          {
+            no: 8,
+            q: "Pernyataan yang bukan termasuk ide pendukung pada paragraf di atas adalah ....",
+            options: [
+              "Ruangan perpustakaan bersih, terang, dan sejuk",
+              "Rak buku tertata rapi sesuai jenis bukunya",
+              "Banyak siswa betah berlama-lama di perpustakaan",
+              "Penjaga perpustakaan meminjamkan buku kepada guru"
+            ],
+            answer: 3,
+            explain: "Informasi mengenai penjaga perpustakaan yang meminjamkan buku kepada guru tidak tercantum dalam paragraf."
+          }
+        ]
+      },
+      {
+        passage: "Memilah sampah di rumah dapat dimulai dengan langkah sederhana. Kita bisa menyediakan dua tempat sampah yang berbeda untuk sampah organik dan anorganik. Sampah organik seperti sisa sayur dan kulit buah dapat diolah menjadi pupuk kompos. Sementara itu, sampah anorganik seperti botol plastik dapat dijual atau dijadikan kerajinan tangan.",
+        label: "Bacalah paragraf berikut untuk menjawab soal nomor 9 dan 10!",
+        questions: [
+          {
+            no: 9,
+            q: "Ide pokok paragraf tersebut adalah ....",
+            options: [
+              "Cara mengolah sisa sayur menjadi pupuk kompos",
+              "Langkah sederhana memilah sampah di rumah",
+              "Manfaat botol plastik untuk kerajinan tangan",
+              "Jenis-jenis tempat sampah di lingkungan rumah"
+            ],
+            answer: 1,
+            explain: "Kalimat pertama menjadi inti paragraf tentang langkah sederhana memilah sampah di rumah, lalu diikuti contoh pelaksanaannya."
+          },
+          {
+            no: 10,
+            q: "Jika dibuat sebuah ide pendukung tambahan yang sesuai dengan paragraf di atas, kalimat yang paling tepat adalah ....",
+            options: [
+              "Membuang sampah ke sungai dapat menyebabkan banjir.",
+              "Harga pupuk kompos di toko pertanian sangat terjangkau.",
+              "Kita juga sebaiknya menempelkan label nama pada masing-masing tempat sampah agar mudah dibedakan.",
+              "Sampah plastik membutuhkan waktu ratusan tahun untuk terurai di tanah."
+            ],
+            answer: 2,
+            explain: "Menempelkan label pada kedua tempat sampah mendukung ide pokok tentang langkah sederhana memilah sampah di rumah."
+          }
+        ]
+      }
+    ];
+
+    const isianQuestions = [
+      {
+        no: 11,
+        q: "Gagasan atau inti permasalahan yang menjadi dasar pengembangan sebuah paragraf disebut ....",
+        accepted: ["ide pokok", "gagasan pokok", "gagasan utama"],
+        displayAnswer: "Ide pokok (atau gagasan pokok / gagasan utama)"
+      },
+      {
+        no: 12,
+        q: "Kalimat yang berisi ide pokok dalam suatu paragraf disebut kalimat ....",
+        accepted: ["kalimat utama", "utama"],
+        displayAnswer: "Kalimat utama"
+      },
+      {
+        no: 13,
+        q: "Paragraf yang kalimat utamanya terletak di awal paragraf disebut paragraf ....",
+        accepted: ["deduktif", "paragraf deduktif"],
+        displayAnswer: "Deduktif (paragraf deduktif)"
+      },
+      {
+        no: 14,
+        q: "Kalimat-kalimat yang menjelaskan atau merinci kalimat utama disebut kalimat ....",
+        accepted: ["penjelas", "kalimat penjelas", "pendukung", "kalimat pendukung"],
+        displayAnswer: "Kalimat penjelas (atau kalimat pendukung)"
+      },
+      {
+        no: 15,
+        passage: "Batik merupakan warisan budaya Indonesia yang sangat membanggakan. Motif batik di setiap daerah memiliki ciri khas dan makna tersendiri. Hingga kini, kain batik sering dipakai dalam acara resmi maupun kegiatan sehari-hari.",
+        q: "Ide pokok pada paragraf di atas adalah ....",
+        accepted: ["batik merupakan warisan budaya indonesia", "warisan budaya indonesia", "batik warisan budaya"],
+        displayAnswer: "Batik merupakan warisan budaya Indonesia yang sangat membanggakan"
+      }
+    ];
+
+    const uraianQuestions = [
+      {
+        no: 16,
+        q: "Jelaskan perbedaan antara ide pokok dan ide pendukung dalam sebuah paragraf!",
+        rubric: "Ide pokok adalah gagasan utama/inti pembahasan dalam paragraf (satu per paragraf), sedangkan ide pendukung adalah gagasan tambahan yang menjelaskan, memerinci, atau memberi contoh ide pokok."
+      },
+      {
+        no: 17,
+        passage: "Permainan tradisional gobak sodor memiliki banyak manfaat bagi anak-anak. Permainan ini melatih ketangkasan dan kecepatan berlari saat menghindari penjaga garis. Selain itu, gobak sodor mengajarkan kerja sama tim dan sikap sportif antaranggota kelompok. Anak-anak juga dapat berolahraga sambil bergembira bersama teman-temannya.",
+        q: "Tuliskan kalimat utama pada paragraf di atas!",
+        rubric: "Permainan tradisional gobak sodor memiliki banyak manfaat bagi anak-anak."
+      },
+      {
+        no: 18,
+        q: "Tuliskan ide pokok dari paragraf pada soal nomor 17 dengan bahasamu sendiri!",
+        rubric: "Manfaat permainan tradisional gobak sodor bagi anak-anak."
+      },
+      {
+        no: 19,
+        q: "Tuliskan dua ide pendukung yang terdapat pada paragraf pada soal nomor 17!",
+        rubric: "Contoh dua ide pendukung: (1) Melatih ketangkasan dan kecepatan berlari saat menghindari penjaga garis; (2) Mengajarkan kerja sama tim dan sikap sportif; (3) Anak-anak dapat berolahraga sambil bergembira."
+      },
+      {
+        no: 20,
+        q: 'Buatlah satu paragraf singkat (minimal 3 kalimat) dengan ide pokok "Manfaat menabung sejak dini"!',
+        rubric: "Contoh: Menabung sejak dini memberikan banyak manfaat bagi masa depan kita. Dengan menyisihkan sebagian uang jajan setiap hari, kita belajar hidup hemat. Uang tabungan dapat digunakan untuk membeli perlengkapan sekolah atau keperluan mendadak."
+      }
+    ];
+
+    const letters = ["A", "B", "C", "D"];
+
+    function renderPG() {
+      const container = document.getElementById("pgContainer");
+      container.innerHTML = "";
+      pgGroups.forEach(group => {
+        const pBox = document.createElement("div");
+        pBox.className = "passage-box";
+        pBox.innerHTML = `<div class="passage-label">${group.label}</div><div>${group.passage}</div>`;
+        container.appendChild(pBox);
+
+        group.questions.forEach(item => {
+          const qDiv = document.createElement("div");
+          qDiv.className = "question-item";
+          qDiv.innerHTML = `
+            <div class="q-title">${item.no}. ${item.q}</div>
+            <div class="options" id="pg-opts-${item.no}">
+              ${item.options.map((opt, idx) => `
+                <label class="option-label" data-q="${item.no}" data-idx="${idx}">
+                  <input type="radio" name="pg_${item.no}" value="${idx}" />
+                  <span><strong>${letters[idx]}.</strong> ${opt}</span>
+                </label>
+              `).join("")}
+            </div>
+            <div class="feedback-box" id="pg-fb-${item.no}"></div>
+          `;
+          container.appendChild(qDiv);
+        });
+      });
+    }
+
+    function renderIsian() {
+      const container = document.getElementById("isianContainer");
+      container.innerHTML = "";
+      isianQuestions.forEach(item => {
+        if (item.passage) {
+          const pBox = document.createElement("div");
+          pBox.className = "passage-box";
+          pBox.innerHTML = `<div class="passage-label">Bacalah paragraf berikut untuk soal nomor ${item.no}!</div><div>${item.passage}</div>`;
+          container.appendChild(pBox);
+        }
+        const qDiv = document.createElement("div");
+        qDiv.className = "question-item";
+        qDiv.innerHTML = `
+          <div class="q-title">${item.no}. ${item.q}</div>
+          <input type="text" id="isian_${item.no}" class="track-input" placeholder="Ketik jawabanmu di sini..." />
+          <div class="feedback-box" id="isian-fb-${item.no}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+    }
+
+    function renderUraian() {
+      const container = document.getElementById("uraianContainer");
+      container.innerHTML = "";
+      uraianQuestions.forEach(item => {
+        if (item.passage) {
+          const pBox = document.createElement("div");
+          pBox.className = "passage-box";
+          pBox.innerHTML = `<div class="passage-label">Bacalah teks berikut untuk soal nomor 17 sampai 19!</div><div>${item.passage}</div>`;
+          container.appendChild(pBox);
+        }
+        const qDiv = document.createElement("div");
+        qDiv.className = "question-item";
+        qDiv.innerHTML = `
+          <div class="q-title">${item.no}. ${item.q}</div>
+          <textarea id="uraian_${item.no}" rows="3" class="track-input" placeholder="Tulis jawaban uraianmu di sini..."></textarea>
+          <div class="feedback-box info" id="uraian-fb-${item.no}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+    }
+
+    function updateProgress() {
+      let answered = 0;
+      pgGroups.forEach(g => g.questions.forEach(q => {
+        if (document.querySelector(`input[name="pg_${q.no}"]:checked`)) answered++;
+      }));
+      isianQuestions.forEach(q => {
+        if (document.getElementById(`isian_${q.no}`).value.trim() !== "") answered++;
+      });
+      uraianQuestions.forEach(q => {
+        if (document.getElementById(`uraian_${q.no}`).value.trim() !== "") answered++;
+      });
+
+      const pct = Math.round((answered / 20) * 100);
+      document.getElementById("progressText").textContent = `Terjawab: ${answered} dari 20 soal`;
+      document.getElementById("progressFill").style.width = pct + "%";
+      document.getElementById("statusBadge").textContent = answered === 20 ? "Semua soal terisi!" : `${pct}% selesai`;
+    }
+
+    function normalizeText(str) {
+      return str.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+    }
+
+    function evaluateQuiz() {
+      let pgPoints = 0;
+      pgGroups.forEach(g => g.questions.forEach(item => {
+        const selected = document.querySelector(`input[name="pg_${item.no}"]:checked`);
+        const labels = document.querySelectorAll(`#pg-opts-${item.no} .option-label`);
+        labels.forEach(l => l.classList.remove("correct", "wrong"));
+
+        const fb = document.getElementById(`pg-fb-${item.no}`);
+        fb.classList.remove("ok", "bad");
+
+        labels[item.answer].classList.add("correct");
+        if (selected && Number(selected.value) === item.answer) {
+          pgPoints += 2;
+          fb.className = "feedback-box show ok";
+          fb.innerHTML = `<strong>Benar (+2 poin)!</strong> ${item.explain}`;
+        } else {
+          if (selected) labels[Number(selected.value)].classList.add("wrong");
+          fb.className = "feedback-box show bad";
+          fb.innerHTML = `<strong>Belum tepat.</strong> Kunci: <strong>${letters[item.answer]}</strong>. ${item.explain}`;
+        }
+      }));
+
+      let isianPoints = 0;
+      isianQuestions.forEach(item => {
+        const val = normalizeText(document.getElementById(`isian_${item.no}`).value);
+        const fb = document.getElementById(`isian-fb-${item.no}`);
+        const isCorrect = val.length > 0 && item.accepted.some(acc => val.includes(acc));
+        if (isCorrect) {
+          isianPoints += 3;
+          fb.className = "feedback-box show ok";
+          fb.innerHTML = `<strong>Tepat (+3 poin)!</strong> Jawaban acuan: ${item.displayAnswer}.`;
+        } else {
+          fb.className = "feedback-box show bad";
+          fb.innerHTML = `<strong>Periksa kembali.</strong> Jawaban yang diharapkan: <strong>${item.displayAnswer}</strong>.`;
+        }
+      });
+
+      uraianQuestions.forEach(item => {
+        const fb = document.getElementById(`uraian-fb-${item.no}`);
+        fb.className = "feedback-box show info";
+        fb.innerHTML = `<strong>Panduan Jawaban / Rubrik (maks. 5 poin):</strong> ${item.rubric}`;
+      });
+
+      const name = document.getElementById("studentName").value.trim() || "Siswa";
+      const cls = document.getElementById("studentClass").value.trim() || "IV";
+      const totalAuto = pgPoints + isianPoints;
+      const pctAuto = Math.round((totalAuto / 35) * 100);
+
+      const summaryEl = document.getElementById("studentSummary");
+      summaryEl.textContent = "";
+      summaryEl.append("Peserta Didik: ");
+      const nameStrong = document.createElement("strong");
+      nameStrong.textContent = name;
+      summaryEl.append(nameStrong, " (Kelas: ");
+      const clsStrong = document.createElement("strong");
+      clsStrong.textContent = cls;
+      summaryEl.append(clsStrong, ")");
+      document.getElementById("pgScore").textContent = `${pgPoints} / 20`;
+      document.getElementById("isianScore").textContent = `${isianPoints} / 15`;
+      document.getElementById("autoTotal").textContent = `${totalAuto} / 35`;
+      document.getElementById("autoPercent").textContent = `${pctAuto}%`;
+
+      const banner = document.getElementById("scoreBanner");
+      banner.classList.add("show");
+      banner.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetQuiz() {
+      document.querySelectorAll('input[type="radio"]').forEach(el => { el.checked = false; });
+      document.querySelectorAll('.track-input').forEach(el => { el.value = ""; });
+      document.querySelectorAll('.option-label').forEach(el => el.classList.remove("correct", "wrong"));
+      document.querySelectorAll('.feedback-box').forEach(el => { el.className = "feedback-box"; el.innerHTML = ""; });
+      document.getElementById("scoreBanner").classList.remove("show");
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // Tab switching
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.tab;
+        document.getElementById("tab-quiz").classList.toggle("hidden", target !== "quiz");
+        document.getElementById("tab-materi").classList.toggle("hidden", target !== "materi");
+      });
+    });
+
+    renderPG();
+    renderIsian();
+    renderUraian();
+    updateProgress();
+
+    document.getElementById("tab-quiz").addEventListener("change", updateProgress);
+    document.getElementById("tab-quiz").addEventListener("input", updateProgress);
+    document.getElementById("submitBtn").addEventListener("click", evaluateQuiz);
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("resetBtn").addEventListener("click", resetQuiz);
+  </script>
+</body>
+</html>
